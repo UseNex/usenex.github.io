@@ -1,0 +1,365 @@
+# NexGame Component - Complete Documentation
+
+## Overview
+
+NexGame is a lightweight, performance-optimized custom HTML5 element (`<nex-game>`) designed to fetch, cache, and securely execute web games from CDN.
+
+### Key Features
+- Race-fetch strategy across multiple CDN nodes
+- Cache Storage API caching (minimizes data usage)
+- Isolated sandbox iframe execution
+- Self-healing runtime with hot-reload capabilities
+
+### Installation
+```html
+<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@29956e0a2c5316c2f0a1d803dc0c313d206ce429/nex.min.js"></script>
+```
+
+---
+
+## Component Attributes
+
+The `<nex-game>` element supports the following attributes:
+
+| Attribute | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `alias` | string | Yes | Unique game identifier (e.g., "fnaf", "angry-birds") |
+| `gid` | string | Yes | Unique session ID for event mapping and instance deduplication |
+
+### Example
+```html
+<nex-game alias="fnaf" gid="session-123"></nex-game>
+```
+
+---
+
+## Global API (`window.nex`)
+
+The component exposes a reactive registry proxy at `window.nex[gid]`.
+
+### Methods
+
+#### `on(eventName, callback)`
+Registers an event listener for a specific lifecycle phase. Can be declared before the DOM element exists.
+
+**Parameters:**
+- `eventName`: `"progress"` | `"ready"` | `"error"`
+- `callback`: `(data: Object) => void`
+
+**Example:**
+```js
+window.nex["session-123"].on("ready", () => {
+  console.log("Game is ready!")
+})
+```
+
+#### `start()`
+Triggers execution and rendering of the game. If assets are still downloading, execution waits for `"ready"` event.
+
+**Example:**
+```js
+window.nex["session-123"].start()
+```
+
+---
+
+## Lifecycle Events
+
+### `progress` Event
+
+Fired continuously during manifest lookup and chunk downloads.
+
+**Payload:**
+```ts
+{ progress: number }  // 0-100, already a percentage
+```
+
+**Example:**
+```js
+nex.on("progress", (data) => {
+  console.log(`Loading: ${data.progress}%`)
+})
+```
+
+---
+
+### `ready` Event
+
+Fired when the entire HTML payload is fetched, validated, merged, and cached. Game is ready to start.
+
+**Payload:** `void`
+
+**Example:**
+```js
+nex.on("ready", () => {
+  console.log("Game is ready!")
+  nex.start()
+})
+```
+
+---
+
+### `error` Event
+
+Fired on network failure, validator rejection, or alias not found.
+
+**Payload:**
+```ts
+{ message: string }
+```
+
+**Example:**
+```js
+nex.on("error", (err) => {
+  console.error("Game loading failed:", err.message)
+})
+```
+
+---
+
+## Technical Architecture
+
+### Race Fetch Strategy
+
+Queries all CDN endpoints simultaneously. The fastest successful response wins; slower requests are aborted via `AbortController`.
+
+**Benefits:**
+- Minimizes latency
+- Improves reliability across geographic regions
+- Automatic failover
+
+**Implementation:**
+```js
+const endpoints = [
+  "https://gcore.jsdelivr.net/gh/UseNex/g-assets-enc/",
+  "https://testingcf.jsdelivr.net/gh/UseNex/g-assets-enc/",
+  "https://cdn.jsdelivr.net/gh/UseNex/g-assets-enc/"
+]
+
+const controllers = []
+const promises = endpoints.map((url) => {
+  const controller = new AbortController()
+  controllers.push(controller)
+  return fetch(url + "game_data.json", { signal: controller.signal })
+})
+const response = await Promise.any(promises)
+controllers.forEach(c => c.abort())
+```
+
+---
+
+### Cache-First Strategy
+
+All requests check Cache Storage before hitting the network, eliminating repetitive data usage on mobile/4G networks.
+
+**Benefits:**
+- Reduces bandwidth usage
+- Faster subsequent loads
+- Works offline after first load
+
+**Cache Details:**
+- Cache name: `nex-core-cache-v2`
+- TTL: 24 hours (86400000ms)
+
+**Implementation:**
+```js
+const cache = await caches.open('nex-core-cache-v2')
+const cached = await cache.match(request)
+if (cached) return cached
+const response = await fetch(request)
+cache.put(request, response.clone())
+return response
+```
+
+---
+
+### Self-Healing Runtime
+
+Listens to live attribute changes (`alias`, `gid`) via `attributeChangedCallback`, gracefully terminating active streams, clearing event registries, and hot-reloading new game pipelines without layout shifts.
+
+**Supported mutations:**
+- `alias` change → reloads new game
+- `gid` change → creates new instance context
+
+**Benefits:**
+- No page refresh required
+- State cleanup prevents memory leaks
+- Smooth transitions between games
+
+---
+
+### Sandbox Iframe
+
+Injects games into an isolated Shadow DOM container with maximized permissions.
+
+**Enabled Features:**
+- Pointer lock
+- Local storage
+- Audio autoplay
+- Gamepad API
+- Clipboard write
+
+**Implementation:**
+```html
+<iframe
+  sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-pointer-lock allow-downloads allow-presentation allow-top-navigation-by-user-activation"
+  allow="autoplay; fullscreen; gamepad; pointer-lock; xr-spatial-tracking; clipboard-write"
+>
+</iframe>
+```
+
+---
+
+## Examples
+
+### Basic Usage
+
+Complete example of loading and starting a game.
+
+**HTML:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@29956e0a2c5316c2f0a1d803dc0c313d206ce429/nex.min.js"></script>
+</head>
+<body>
+  <nex-game alias="fnaf" gid="my-game-1"></nex-game>
+
+  <script>
+    const gid = "my-game-1"
+    
+    window.nex[gid].on("progress", (data) => {
+      console.log(`Loading: ${data.progress}%`)
+    })
+
+    window.nex[gid].on("ready", () => {
+      console.log("Game ready!")
+      window.nex[gid].start()
+    })
+
+    window.nex[gid].on("error", (err) => {
+      console.error("Game error:", err.message)
+    })
+  </script>
+</body>
+</html>
+```
+
+---
+
+### Dynamic Loading
+
+Example of dynamically changing games by updating the `alias` attribute.
+
+**JavaScript:**
+```js
+const gameEl = document.querySelector('nex-game')
+gameEl.setAttribute('alias', 'bloxorz')
+// Component automatically hot-reloads the new game
+```
+
+**HTML:**
+```html
+<nex-game id="game-container" alias="fnaf" gid="dynamic-1"></nex-game>
+
+<button onclick="loadGame('bloxorz')">Play Bloxorz</button>
+<button onclick="loadGame('2048')">Play 2048</button>
+
+<script>
+function loadGame(alias) {
+  document.getElementById('game-container').setAttribute('alias', alias)
+}
+</script>
+```
+
+---
+
+### Split-Screen Example
+
+Two games side by side.
+
+**HTML:**
+```html
+<div style="display:flex;height:100vh;">
+  <div style="flex:1;border-right:2px solid #444;">
+    <nex-game alias="angry-birds" gid="ab"></nex-game>
+  </div>
+  <div style="flex:1;">
+    <nex-game alias="race-survival-arena-king-full" gid="race"></nex-game>
+  </div>
+</div>
+
+<script>
+// Register listeners for both games
+window.nex.ab.on("ready", () => window.nex.ab.start())
+window.nex.race.on("ready", () => window.nex.race.start())
+</script>
+```
+
+---
+
+## CDN Nodes
+
+The component uses the following CDN nodes for redundancy:
+
+1. `https://gcore.jsdelivr.net/gh/UseNex/g-assets-enc/`
+2. `https://testingcf.jsdelivr.net/gh/UseNex/g-assets-enc/`
+3. `https://quantil.jsdelivr.net/gh/UseNex/g-assets-enc/`
+4. `https://fastly.jsdelivr.net/gh/UseNex/g-assets-enc/`
+5. `https://jsdelivr.b-cdn.net/gh/UseNex/g-assets-enc/`
+6. `https://cdn.jsdelivr.net/gh/UseNex/g-assets-enc/`
+
+All nodes serve the same encrypted game assets.
+
+---
+
+## Architecture Flow
+
+1. **User includes** `<nex-game>` element with `alias` and `gid`
+2. **Component initializes** and checks for existing instance with same `gid`
+3. **Fetches** `game_data.json` from CDN using race strategy
+4. **Validates** alias exists in game data
+5. **Fetches** `nr.txt` to get chunk count
+6. **Downloads** encrypted chunks (`src.part1.txt`, `src.part2.txt`, etc.)
+7. **Decrypts** each chunk using XOR cipher
+8. **Assembles** full HTML payload
+9. **Emits** `ready` event
+10. **Starts** game when `start()` called
+11. **Executes** in isolated sandbox iframe
+
+---
+
+## Versioning
+
+The library supports semantic versioning via CDN URL:
+- `@latest` - Always latest version
+- `@v2.0.0` - Specific version
+- `@hash` - Specific commit hash
+
+**Example:**
+```html
+<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@latest/nex.min.js"></script>
+```
+
+---
+
+## Browser Support
+
+- Chrome/Edge 80+
+- Firefox 75+
+- Safari 13.1+
+- Opera 67+
+
+Requires:
+- `CustomElementRegistry`
+- `Shadow DOM`
+- `Cache Storage API`
+- `Fetch API`
+- `Promise.any()` (or polyfill)
+
+---
+
+## License
+
+MIT License - Open source and free to use.
