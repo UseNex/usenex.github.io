@@ -1,0 +1,101 @@
+{
+  "groups": [
+    {
+      "title": "Getting Started",
+      "items": [
+        {
+          "id": "overview",
+          "label": "Overview",
+          "icon": "rocket",
+          "content": "# NexGame Component\n\n`NexGame` is a lightweight, performance-optimized custom HTML5 element (`<nex-game>`) designed to fetch, cache, and securely execute web games.\n\n## Key Features\n- Race-fetch strategy across multiple CDN nodes\n- Aggressive Cache Storage caching (minimizes cellular data usage)\n- Isolated, high-permission sandbox iframe execution\n- Self-healing runtime with hot-reload capabilities\n\n## Installation\n```html\n<script src=\"https://cdn.jsdelivr.net/gh/usenex/nex-js@f10e7a480b7d1d3b5af4b0e3066d8115f7f0c356/nex.min.js\"></script>\n```"
+        }
+      ]
+    },
+    {
+      "title": "Component API",
+      "items": [
+        {
+          "id": "attributes",
+          "label": "Attributes",
+          "icon": "sliders",
+          "content": "# Component Attributes\n\nThe `<nex-game>` element supports the following attributes:\n\n| Attribute | Type | Description |\n| --- | --- | --- |\n| `alias` | `string` | Unique identifier name of the target game (e.g., `\"fnaf\"`) |\n| `gid` | `string` | Unique session identifier for event mapping and instance deduplication |\n\n## Example\n```html\n<nex-game alias=\"fnaf\" gid=\"session-123\"></nex-game>\n```"
+        },
+        {
+          "id": "global-api",
+          "label": "Global API (window.nex)",
+          "icon": "globe",
+          "content": "# Global API (`window.nex`)\n\nThe component exposes a reactive registry proxy attached to `window.nex[gid]`.\n\n## Methods\n\n### `on(eventName, callback)`\nRegisters an event listener for a specific lifecycle phase. Can be declared before the DOM element is instantiated.\n\n**Parameters:**\n- `eventName`: `\"progress\"` | `\"ready\"` | `\"error\"`\n- `callback`: `(data: Object) => void`\n\n**Example:**\n```js\nwindow.nex[\"session-123\"].on(\"ready\", () => {\n  console.log(\"Game is ready!\")\n})\n```\n\n### `start()`\nTriggers execution and rendering of the game inside the shadow DOM sandbox. If assets are still downloading, execution remains pending until the `\"ready\"` event fires.\n\n**Example:**\n```js\nwindow.nex[\"session-123\"].start()\n```"
+        }
+      ]
+    },
+    {
+      "title": "Lifecycle Events",
+      "items": [
+        {
+          "id": "progress",
+          "label": "progress",
+          "icon": "loader",
+          "content": "# `progress` Event\n\nFired continuously during manifest lookup and chunk download phases.\n\n**Payload:**\n```ts\n{ progress: number }\n```\n\n**Example:**\n```js\nnex.on(\"progress\", (data) => {\n  console.log(`Loading: ${data.progress}%`)\n})\n```"
+        },
+        {
+          "id": "ready",
+          "label": "ready",
+          "icon": "check-circle",
+          "content": "# `ready` Event\n\nFired when the entire HTML payload has been successfully fetched, validated, merged, and cached. The game is now primed for execution.\n\n**Payload:** `void`\n\n**Example:**\n```js\nnex.on(\"ready\", () => {\n  console.log(\"Game is ready to start!\")\n  nex.start()\n})\n```"
+        },
+        {
+          "id": "error",
+          "label": "error",
+          "icon": "alert-circle",
+          "content": "# `error` Event\n\nFired when a network failure occurs, the validator rejects a payload, or the alias does not exist.\n\n**Payload:**\n```ts\n{ message: string }\n```\n\n**Example:**\n```js\nnex.on(\"error\", (err) => {\n  console.error(\"Game loading failed:\", err.message)\n})\n```"
+        }
+      ]
+    },
+    {
+      "title": "Technical Architecture",
+      "items": [
+        {
+          "id": "race-fetch",
+          "label": "Race Fetch Strategy",
+          "icon": "zap",
+          "content": "# Array-Driven Race Fetch\n\nQueries all CDN endpoints simultaneously. The fastest successful response resolves the request, while slower pending requests are instantly aborted via `AbortController`.\n\n**Benefits:**\n- Minimizes latency\n- Improves reliability across geographic regions\n- Automatic failover\n\n**Implementation:**\n```js\n// Internal mechanism\nconst controllers = []\nconst promises = endpoints.map((url, i) => {\n  const controller = new AbortController()\n  controllers.push(controller)\n  return fetch(url, { signal: controller.signal })\n})\nconst response = await Promise.race(promises)\n// Abort all other pending requests\ncontrollers.forEach(c => c.abort())\n```"
+        },
+        {
+          "id": "caching",
+          "label": "Cache-First Strategy",
+          "icon": "database",
+          "content": "# Aggressive Cache-First Strategy\n\nAll network requests check the `np-cache-1` Cache Storage API before hitting the network, eliminating repetitive data consumption over mobile/4G networks.\n\n**Benefits:**\n- Reduces bandwidth usage\n- Faster subsequent loads\n- Works offline after first load\n\n**Example:**\n```js\n// Internal caching mechanism\nconst cache = await caches.open('np-cache-1')\nconst cached = await cache.match(request)\nif (cached) return cached\nconst response = await fetch(request)\ncache.put(request, response.clone())\nreturn response\n```"
+        },
+        {
+          "id": "self-healing",
+          "label": "Self-Healing Runtime",
+          "icon": "refresh-cw",
+          "content": "# Self-Healing Runtime\n\nListens to live attribute alterations (`alias`, `gid`) via `attributeChangedCallback`, gracefully terminating active streams, clearing event registries, and hot-reloading new game pipelines without layout shifting.\n\n**Supported mutations:**\n- `alias` change → reloads new game\n- `gid` change → creates new instance context\n\n**Benefits:**\n- No page refresh required\n- State cleanup prevents memory leaks\n- Smooth transitions between games"
+        },
+        {
+          "id": "sandbox",
+          "label": "Sandbox Iframe",
+          "icon": "shield",
+          "content": "# Unrestricted Sandbox Iframe\n\nInjects the game into an isolated Shadow DOM container with maximized permissions allowed for feature policy capabilities.\n\n**Enabled features:**\n- Pointer lock\n- Local storage\n- Audio autoplay\n- Gamepad API\n\n**Implementation:**\n```html\n<iframe\n  sandbox=\"allow-scripts allow-same-origin allow-pointer-lock allow-autoplay allow-modals\"\n  allow=\"autoplay; gamepad; pointer-lock\"\n>\n</iframe>\n```\n\n**Security note:** The sandbox provides isolation while allowing necessary permissions for game functionality."
+        }
+      ]
+    },
+    {
+      "title": "Examples",
+      "items": [
+        {
+          "id": "basic-usage",
+          "label": "Basic Usage",
+          "icon": "code",
+          "content": "# Basic Usage Example\n\nComplete example of loading and starting a game with the NexGame component.\n\n## HTML\n```html\n<!DOCTYPE html>\n<html>\n<head>\n  <script src=\"https://cdn.jsdelivr.net/gh/usenex/nex-js@f10e7a480b7d1d3b5af4b0e3066d8115f7f0c356/nex.min.js\"></script>\n</head>\n<body>\n  <nex-game alias=\"fnaf\" gid=\"my-game-1\"></nex-game>\n\n  <script>\n    const gid = \"my-game-1\"\n    \n    window.nex[gid].on(\"progress\", (data) => {\n      console.log(`Loading progress: ${data.progress}%`)\n    })\n\n    window.nex[gid].on(\"ready\", () => {\n      console.log(\"Game ready!\")\n      window.nex[gid].start()\n    })\n\n    window.nex[gid].on(\"error\", (err) => {\n      console.error(\"Game error:\", err.message)\n    })\n  </script>\n</body>\n</html>\n```"
+        },
+        {
+          "id": "dynamic-loading",
+          "label": "Dynamic Loading",
+          "icon": "refresh-cw",
+          "content": "# Dynamic Game Loading\n\nExample of dynamically changing games by updating the `alias` attribute.\n\n## JavaScript\n```js\n// Get the game element\nconst gameEl = document.querySelector('nex-game')\n\n// Load a different game\ngameEl.setAttribute('alias', 'bloxorz')\n\n// The component automatically:\n// 1. Terminates active streams\n// 2. Clears event registries\n// 3. Hot-reloads the new game\n```\n\n## HTML\n```html\n<nex-game id=\"game-container\" alias=\"fnaf\" gid=\"dynamic-1\"></nex-game>\n\n<button onclick=\"loadGame('bloxorz')\">Play Bloxorz</button>\n<button onclick=\"loadGame('2048')\">Play 2048</button>\n\n<script>\nfunction loadGame(alias) {\n  document.getElementById('game-container').setAttribute('alias', alias)\n}\n</script>\n```"
+        }
+      ]
+    }
+  ]
+}
