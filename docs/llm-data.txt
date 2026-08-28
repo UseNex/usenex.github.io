@@ -12,7 +12,7 @@ NexGame is a lightweight, performance-optimized custom HTML5 element (`<nex-game
 
 ### Installation
 ```html
-<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@29956e0a2c5316c2f0a1d803dc0c313d206ce429/nex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@34b490a8957a17554793edcdd153aabb42a75268/nex.min.js"></script>
 ```
 
 ---
@@ -30,6 +30,96 @@ The `<nex-game>` element supports the following attributes:
 ```html
 <nex-game alias="fnaf" gid="session-123"></nex-game>
 ```
+
+---
+
+## Metadata API (`window.nex.metadata`)
+
+The Metadata API lets you discover and access game information without loading the actual game.
+
+### Available Methods
+
+#### `window.nex.metadata.getAllAliases()`
+Get a list of all game identifiers.
+
+```js
+const games = window.nex.metadata.getAllAliases()
+console.log(games) // ['2048', 'fnaf', 'slope', ...]
+```
+
+#### `window.nex.metadata.get(alias)`
+Get metadata for a specific game.
+
+```js
+const game = window.nex.metadata.get("2048")
+console.log(game.name) // "2048"
+console.log(game.category) // "Puzzle"
+```
+
+#### `window.nex.metadata.getAllMetadata()`
+Get metadata for all games at once.
+
+```js
+const allGames = window.nex.metadata.getAllMetadata()
+// Returns object with all game metadata
+```
+
+#### `window.nex.metadata.alias[alias]`
+Shortcut to access game metadata.
+
+```js
+const game = window.nex.metadata.alias["fnaf"]
+console.log(game.name) // "Five Nights at Freddy's"
+```
+
+### Game Metadata Structure
+
+Each game in the Nex platform has the following structure:
+
+```ts
+interface GameMetadata {
+  alias: string        // Unique identifier
+  name: string         // Display name
+  category: string     // Game genre/category
+  description: string  // Short description
+  img: string          // Thumbnail URL (400x300px, 4:3 aspect ratio)
+}
+```
+
+### Example Game Data
+
+```js
+{
+  "alias": "fnaf",
+  "name": "Five Nights at Freddy's",
+  "category": "Horror",
+  "description": "Manage security room power and doors to survive creepy animatronic robots.",
+  "img": "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@d31c14abee877357afdd6a44fa921199ba0033fa/fnaf.webp"
+}
+```
+
+### Thumbnail Specifications
+
+All game thumbnails follow these specifications:
+- **Dimensions**: 400px width × 300px height
+- **Aspect Ratio**: 4:3
+- **Format**: WebP
+- **URL Pattern**: `https://cdn.jsdelivr.net/gh/UseNex/thumbnails@d31c14abee877357afdd6a44fa921199ba0033fa/{alias}.webp`
+
+### Game Categories
+
+Games are organized into these categories:
+- **Action** - Fast-paced gameplay
+- **Puzzle** - Logic and problem-solving
+- **Strategy** - Planning and tactics
+- **Sports** - Athletic competitions
+- **Racing** - Speed and driving
+- **Driving** - Vehicle simulation
+- **Skill** - Precision and timing
+- **Horror** - Scary experiences
+- **Simulation** - Life and management
+- **Sandbox** - Creative freedom
+- **Clicker** - Idle and incremental
 
 ---
 
@@ -158,12 +248,12 @@ All requests check Cache Storage before hitting the network, eliminating repetit
 - Works offline after first load
 
 **Cache Details:**
-- Cache name: `nex-core-cache-v2`
+- Cache name: `np-cache-1`
 - TTL: 24 hours (86400000ms)
 
 **Implementation:**
 ```js
-const cache = await caches.open('nex-core-cache-v2')
+const cache = await caches.open('np-cache-1')
 const cached = await cache.match(request)
 if (cached) return cached
 const response = await fetch(request)
@@ -198,6 +288,9 @@ Injects games into an isolated Shadow DOM container with maximized permissions.
 - Audio autoplay
 - Gamepad API
 - Clipboard write
+- Fullscreen
+- Downloads
+- Modals
 
 **Implementation:**
 ```html
@@ -221,7 +314,7 @@ Complete example of loading and starting a game.
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@29956e0a2c5316c2f0a1d803dc0c313d206ce429/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@34b490a8957a17554793edcdd153aabb42a75268/nex.min.js"></script>
 </head>
 <body>
   <nex-game alias="fnaf" gid="my-game-1"></nex-game>
@@ -241,6 +334,88 @@ Complete example of loading and starting a game.
     window.nex[gid].on("error", (err) => {
       console.error("Game error:", err.message)
     })
+  </script>
+</body>
+</html>
+```
+
+---
+
+### Game Gallery
+
+Create a game selection screen with thumbnails.
+
+**HTML:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@34b490a8957a17554793edcdd153aabb42a75268/nex.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: system-ui;
+      background: #0a0a0f;
+      color: #fff;
+      padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #1a1a2e;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .card h3 { font-size: 1rem; margin-bottom: 5px; }
+    .card p { font-size: 0.8rem; color: #888; }
+  </style>
+</head>
+<body>
+  <div class="grid" id="gallery"></div>
+  <nex-game id="game-container" style="display:none;"></nex-game>
+
+  <script>
+    const games = window.nex.metadata.getAllMetadata()
+    const gallery = document.getElementById('gallery')
+
+    Object.values(games).forEach(game => {
+      const card = document.createElement('div')
+      card.className = 'card'
+      card.innerHTML = `
+        <img src="${game.img}" alt="${game.name}" loading="lazy">
+        <h3>${game.name}</h3>
+        <p>${game.category}</p>
+      `
+      card.onclick = () => playGame(game.alias)
+      gallery.appendChild(card)
+    })
+
+    function playGame(alias) {
+      const container = document.getElementById('game-container')
+      container.style.display = 'block'
+      container.setAttribute('alias', alias)
+      container.setAttribute('gid', 'gallery-game')
+      
+      window.nex['gallery-game'].on('ready', () => {
+        window.nex['gallery-game'].start()
+      })
+    }
   </script>
 </body>
 </html>
@@ -291,7 +466,6 @@ Two games side by side.
 </div>
 
 <script>
-// Register listeners for both games
 window.nex.ab.on("ready", () => window.nex.ab.start())
 window.nex.race.on("ready", () => window.nex.race.start())
 </script>
@@ -327,6 +501,109 @@ All nodes serve the same encrypted game assets.
 9. **Emits** `ready` event
 10. **Starts** game when `start()` called
 11. **Executes** in isolated sandbox iframe
+
+---
+
+## Best Practices
+
+### 1. Use Unique GIDs
+Always use unique `gid` values for each game instance to prevent conflicts.
+
+```html
+<!-- Good -->
+<nex-game alias="2048" gid="game-${Date.now()}"></nex-game>
+
+<!-- Bad - reusing same gid -->
+<nex-game alias="2048" gid="game-1"></nex-game>
+```
+
+### 2. Lazy Load Games
+Only create game elements when needed.
+
+```js
+function loadGame(alias) {
+  const container = document.createElement('nex-game')
+  container.setAttribute('alias', alias)
+  container.setAttribute('gid', `game-${Date.now()}`)
+  document.body.appendChild(container)
+}
+```
+
+### 3. Handle Errors Gracefully
+Always listen for error events.
+
+```js
+window.nex[gid].on('error', (err) => {
+  document.querySelector('.error').textContent = 'Failed to load game'
+})
+```
+
+### 4. Clean Up on Unmount
+Remove game elements when no longer needed.
+
+```js
+function removeGame() {
+  const game = document.querySelector('nex-game')
+  if (game) game.remove()
+}
+```
+
+### 5. Thumbnail Display
+When displaying game thumbnails, use 4:3 aspect ratio for optimal display:
+
+```css
+.game-thumbnail {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+```
+
+---
+
+## Common Issues & Solutions
+
+### Game doesn't load
+
+**Solution:** Check that you're using a valid alias.
+
+```js
+const valid = window.nex.metadata.getAllAliases()
+console.log('Available games:', valid)
+```
+
+### Duplicate GID error
+
+**Solution:** Use unique GIDs for each instance.
+
+```js
+const gid = `game-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`
+```
+
+### Game won't start
+
+**Solution:** Make sure to call `start()` after the `ready` event.
+
+```js
+window.nex[gid].on('ready', () => {
+  window.nex[gid].start()
+})
+```
+
+### Thumbnails not loading
+
+**Solution:** Check if the game exists and the CDN is accessible. Thumbnails are 400x300px WebP images with 4:3 aspect ratio.
+
+```js
+const game = window.nex.metadata.get('2048')
+if (game) {
+  console.log('Thumbnail URL:', game.img)
+}
+```
+
+### CORS issues
+
+**Solution:** The Nex CDN endpoints are configured for cross-origin requests. If you're developing locally, serve your page through a local server instead of opening the file directly.
 
 ---
 
