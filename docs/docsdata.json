@@ -2,11 +2,9 @@
   "title": "Nex Platform Documentation",
   "version": "1.0.0",
   "description": "Complete documentation for the Nex Game Platform - a lightweight, performance-optimized HTML5 game delivery system.",
-  "sections": [
+  "groups": [
     {
-      "id": "getting-started",
       "title": "Getting Started",
-      "description": "Quick introduction to the Nex Game Platform",
       "items": [
         {
           "id": "overview",
@@ -23,9 +21,7 @@
       ]
     },
     {
-      "id": "component-api",
       "title": "Component API",
-      "description": "Everything you need to know about using the NexGame component",
       "items": [
         {
           "id": "attributes",
@@ -42,9 +38,7 @@
       ]
     },
     {
-      "id": "metadata-api",
       "title": "Metadata API",
-      "description": "Access game information and discover available titles",
       "items": [
         {
           "id": "metadata-overview",
@@ -61,9 +55,7 @@
       ]
     },
     {
-      "id": "examples",
       "title": "Examples",
-      "description": "Practical examples to get you started quickly",
       "items": [
         {
           "id": "basic-usage",
@@ -86,9 +78,7 @@
       ]
     },
     {
-      "id": "best-practices",
       "title": "Best Practices",
-      "description": "Tips and guidelines for optimal usage",
       "items": [
         {
           "id": "performance",
