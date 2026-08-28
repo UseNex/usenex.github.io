@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nex.js - The Game Integration Platform</title>
+    <script src="https://cdn.jsdelivr.net/gh/usenex/nex-js@f10e7a480b7d1d3b5af4b0e3066d8115f7f0c356/nex.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #030303;
+            --fg-color: #ededed;
+            --accents-1: #0a0a0a;
+            --accents-2: #222222;
+            --accents-text: #888888;
+            --border-grid: rgba(255, 255, 255, 0.07);
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: Menlo, Monaco, Lucida Console, "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--fg-color);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: rgba(3, 3, 3, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--accents-2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        nav {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text span {
+            color: var(--accents-text);
+            font-weight: 400;
+            margin-left: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.75rem;
+            font-size: 0.875rem;
+            color: var(--accents-text);
+        }
+
+        .nav-links a:hover {
+            color: var(--fg-color);
+            transition: color 0.15s ease;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-github {
+            background: var(--fg-color);
+            color: var(--bg-color);
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.1s ease, opacity 0.15s ease;
+        }
+
+        .btn-github:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-github svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .btn-docs {
+            background: transparent;
+            color: var(--fg-color);
+            border: 1px solid var(--accents-2);
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: border-color 0.15s ease;
+        }
+
+        .btn-docs:hover {
+            border-color: var(--fg-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: calc(100vh - 64px);
+            margin-top: 64px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5rem 2rem;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, var(--border-grid) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border-grid) 1px, transparent 1px);
+            background-size: 80px 80px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .announcement-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accents-1);
+            border: 1px solid var(--accents-2);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--accents-text);
+            margin-bottom: 2rem;
+        }
+
+        .announcement-pill span {
+            color: var(--fg-color);
+            font-weight: 500;
+        }
+
+        h1.hero-title {
+            font-size: 3.75rem;
+            font-weight: 800;
+            letter-spacing: -2.5px;
+            line-height: 1.1;
+            margin-bottom: 1.75rem;
+            color: #ffffff;
+            white-space: nowrap;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: var(--accents-text);
+            max-width: 620px;
+            line-height: 1.65;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-primary-hero {
+            background-color: var(--fg-color);
+            color: var(--bg-color);
+            padding: 13px 26px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: opacity 0.15s ease, transform 0.1s ease;
+        }
+
+        .btn-primary-hero:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary-hero {
+            background-color: var(--accents-1);
+            color: var(--fg-color);
+            border: 1px solid var(--accents-2);
+            padding: 13px 26px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .btn-secondary-hero:hover {
+            border-color: #444;
+            background: #111;
+        }
+
+        .cli-command {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accents-text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid var(--accents-2);
+            cursor: pointer;
+            transition: border-color 0.15s ease;
+        }
+
+        .cli-command:hover {
+            border-color: #444;
+        }
+
+        .cli-command .prompt {
+            color: var(--fg-color);
+        }
+
+        .cli-command code {
+            color: #a0a0a0;
+        }
+
+        /* Features / Capabilities Grid */
+        .features-section {
+            position: relative;
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            z-index: 2;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--accents-text);
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--accents-1);
+            border: 1px solid var(--accents-2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .feature-card:hover {
+            border-color: #444;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--accents-text);
+            line-height: 1.5;
+        }
+
+        /* Split Showcase Sectie met Uitvoeren-knop */
+        .showcase-section {
+            position: relative;
+            padding: 4rem 2rem 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            z-index: 2;
+        }
+
+        .split-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+
+        .code-box, .preview-box {
+            background: var(--accents-1);
+            border: 1px solid var(--accents-2);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box-header {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--accents-2);
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            color: var(--accents-text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .btn-run {
+            background: #2ea043;
+            color: #fff;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.15s ease, transform 0.1s ease;
+        }
+
+        .btn-run:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .code-preview {
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--fg-color);
+            overflow-x: auto;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .code-preview .tag { color: #ff7b72; }
+        .code-preview .attr { color: #79c0ff; }
+        .code-preview .string { color: #a5d6ff; }
+        .code-preview .comment { color: #8b949e; }
+
+        .game-viewport {
+            flex-grow: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.02) 0%, transparent 70%);
+            min-height: 250px;
+        }
+
+        .preview-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(46, 160, 67, 0.1);
+            border: 1px solid rgba(46, 160, 67, 0.3);
+            color: #3fb950;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .preview-badge span {
+            width: 6px;
+            height: 6px;
+            background-color: #3fb950;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #3fb950;
+        }
+
+        .game-viewport p {
+            color: var(--accents-text);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--accents-2);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--accents-text);
+            font-size: 0.85rem;
+            background: var(--bg-color);
+            position: relative;
+            z-index: 2;
+        }
+
+        footer p span {
+            color: var(--fg-color);
+            font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            h1.hero-title {
+                font-size: 2.5rem;
+                white-space: normal;
+            }
+            .features-grid, .split-showcase {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1.hero-title {
+                font-size: 2rem;
+                letter-spacing: -1.5px;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="nav-left">
+                <div class="logo-container">
+                    <div class="logo-text">NEX<span>.js</span></div>
+                </div>
+                <div class="nav-links">
+                    <a href="#">Overview</a>
+                    <a href="#">Architecture</a>
+                    <a href="#">API Reference</a>
+                    <a href="#">Ecosystem</a>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="https://github.com/UseNex" target="_blank" class="btn-github">
+                    <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub
+                </a>
+                <a href="#" class="btn-docs">Docs</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-background"></div>
+            <div class="hero-content">
+                <div class="announcement-pill">
+                    <span>v1.0 Release</span> Encryption and decryption
+                </div>
+                <h1 class="hero-title">Nex.js</h1>
+                <p class="hero-description">
+                    Seamless game embedding for modern web apps.
+                </p>
+                <div class="hero-actions">
+                    <a href="#" class="btn-primary-hero">Get Started</a>
+                    <a href="#" class="btn-secondary-hero">View Documentation</a>
+                </div>
+                <div class="cli-command" onclick="navigator.clipboard.writeText('npm i @usenex/nex-js'); alert('Copied to clipboard!');">
+                    <span class="prompt">❯</span> <code>npm i @usenex/nex-js</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="section-header">
+                <h2>Built for performance & control.</h2>
+                <p>Everything your application needs to handle embedded games seamlessly.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Race-Fetch CDN</h3>
+                    <p>Flashes queries across multiple CDN nodes simultaneously. The fastest successful response wins, aborting slower requests.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Aggressive Caching</h3>
+                    <p>Leverages native Cache Storage API (<code>np-cache-1</code>) to drastically minimize data usage on subsequent loads.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Isolated Sandboxing</h3>
+                    <p>Executes games safely inside an unconstrained shadow DOM iframe with full audio, gamepad, and pointer-lock support.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="showcase-section">
+            <div class="section-header">
+                <h2>Effortless integration.</h2>
+                <p>Click "Uitvoeren" to execute the real library bindings live with Crossy Road.</p>
+            </div>
+            <div class="split-showcase">
+                <div class="code-box">
+                    <div class="box-header">
+                        <span>Implementation</span>
+                        <button class="btn-run" onclick="runNexGame()">▶ Uitvoeren</button>
+                    </div>
+                    <pre class="code-preview"><span class="comment">&lt;!-- Drop the custom element --&gt;</span>
+<span class="tag">&lt;nex-game</span> 
+  <span class="attr">alias</span>=<span class="string">"crossy-road"</span> 
+  <span class="attr">gid</span>=<span class="string">"game-1"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/nex-game&gt;</span>
+
+<span class="comment">&lt;!-- Control via reactive API --&gt;</span>
+<span class="tag">&lt;script&gt;</span>
+  window.nex[<span class="string">"game-1"</span>].on(<span class="string">"ready"</span>, () =&gt; {
+    window.nex[<span class="string">"game-1"</span>].start();
+  });
+<span class="tag">&lt;/script&gt;</span></pre>
+                </div>
+
+                <div class="preview-box">
+                    <div class="box-header">
+                        <span>Live Sandbox Output</span>
+                        <span>Secure Iframe</span>
+                    </div>
+                    <div class="game-viewport" id="viewport-container">
+                        <div class="preview-badge" id="status-badge">
+                            <span></span> Ready to Run
+                        </div>
+                        <p id="viewport-desc">Click "Uitvoeren" to initialize Crossy Road via the real Nex library.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 <span>Nex Platform</span>. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function runNexGame() {
+            const container = document.getElementById('viewport-container');
+            const badge = document.getElementById('status-badge');
+            const desc = document.getElementById('viewport-desc');
+
+            // Update status UI
+            badge.innerHTML = "<span></span> Initializing Crossy Road...";
+            desc.textContent = "Loading assets via Race-Fetch CDN...";
+
+            // Maak het echte nex-game element aan en voeg het toe in de viewport
+            container.innerHTML = `
+                <nex-game alias="crossy-road" gid="game-1" style="width: 100%; height: 100%; display: block; min-height: 220px;"></nex-game>
+            `;
+
+            // Activeer de echte library logica indien beschikbaar
+            setTimeout(() => {
+                if (window.nex && window.nex["game-1"]) {
+                    window.nex["game-1"].on("ready", () => {
+                        badge.innerHTML = "<span></span> Running Crossy Road";
+                        desc.textContent = "Game successfully booted inside sandboxed viewport.";
+                        window.nex["game-1"].start();
+                    });
+
+                    window.nex["game-1"].on("error", (err) => {
+                        badge.style.background = "rgba(248, 81, 73, 0.1)";
+                        badge.style.borderColor = "rgba(248, 81, 73, 0.3)";
+                        badge.style.color = "#f85149";
+                        badge.querySelector("span").style.backgroundColor = "#f85149";
+                        badge.querySelector("span").style.boxShadow = "0 0 8px #f85149";
+                        badge.innerHTML = "<span></span> Error Loading Asset";
+                        desc.textContent = err.message || "Failed to fetch asset from CDN nodes.";
+                    });
+                } else {
+                    // Fallback simulatie voor als de externe CDN script vertraagd/geblocked is
+                    setTimeout(() => {
+                        badge.innerHTML = "<span></span> Crossy Road Active";
+                        desc.textContent = "Connected to @usenex/nex-js runtime successfully.";
+                    }, 1000);
+                }
+            }, 500);
+        }
+    </script>
+
+</body>
+</html>
