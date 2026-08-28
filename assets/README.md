@@ -1,0 +1,1 @@
+The assets for NEX.
