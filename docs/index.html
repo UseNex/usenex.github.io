@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>ZYNQ | Onyx Darker</title>
+  <title>NexGame | Documentation</title>
   <style>
     /* ——— extreme dark onyx ——— */
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -85,7 +85,7 @@
     .nav-item { display: flex; align-items: center; padding: 10px 12px; font-size: 14px; color: var(--text-muted); cursor: pointer; border-radius: 6px; transition: .15s; margin-bottom: 4px; text-decoration: none; }      
     .nav-item:hover { background: var(--bg-subtle); color: var(--text-main); }      
     .nav-item.active { background: #0d0d1a; color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.8); font-weight: 500; }      
-    .nav-icon { margin-right: 12px; width: 16px; height: 16px; opacity: .4; }      
+    .nav-icon { margin-right: 12px; width: 16px; height: 16px; opacity: .6; flex-shrink: 0; }      
     .nested-container { margin-left: 18px; border-left: 1px solid var(--border-color); padding-left: 4px; margin-top: 4px; }            
     
     main { flex: 1; overflow-y: auto; padding: 56px 0 0 0; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; position: relative; }            
@@ -191,12 +191,11 @@
     th { background: #0a0a0a !important; }
     blockquote { background: #0a0a0a !important; }
   </style>
-  <!-- Fonts & Prism (light) maar we overschrijven met dark onyx -->
+  <!-- Fonts & Prism -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
 </head>
 <body>
-  <!-- Geen thema toggle, altijd onyx darker -->
   <div id="sidebar-overlay"></div>
   <nav id="navbar">
     <button id="burger-btn"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
@@ -240,7 +239,6 @@
       const DATA_URL = BASE_URL + 'docsdata.json';
       const LLM_COPY_URL = BASE_URL + 'llm-data.txt';
 
-      // forced onyx darker – no theme toggle
       function init() {
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
@@ -341,18 +339,24 @@
           Prism.highlightAll();
         }
 
+        // FIXED: Gebruik Lucide icons uit de JSON
         function createNavItem(item, container) {
           const el = document.createElement('div');
           el.className = 'nav-item';
           el.id = `nav-${item.id}`;
-          el.innerHTML = `<span style="margin-right:12px;opacity:.4;">📄</span><span>${item.label}</span>`;
+          
+          // Gebruik het icon uit de JSON of fallback naar 'file-text'
+          const iconName = item.icon || 'file-text';
+          el.innerHTML = `<i data-lucide="${iconName}" class="nav-icon"></i><span>${item.label}</span>`;
+          
           el.onclick = (e) => {
             e.stopPropagation();
             scrollToSection(item.id);
           };
           container.appendChild(el);
           if (item.children) {
-            const childGroup = document.createElement('div'); childGroup.className = 'nested-container';
+            const childGroup = document.createElement('div'); 
+            childGroup.className = 'nested-container';
             item.children.forEach(child => createNavItem(child, childGroup));
             container.appendChild(childGroup);
           }
@@ -361,19 +365,33 @@
         function renderSidebar() {
           navContainer.innerHTML = '';
           docsData.groups.forEach(g => {
-            const groupDiv = document.createElement('div'); groupDiv.className = 'nav-group';
-            const header = document.createElement('div'); header.className = 'nav-group-header';
-            header.innerHTML = `<span class="nav-group-title">${g.title}</span><span style="color:#555;">▾</span>`;
-            const itemsDiv = document.createElement('div'); itemsDiv.className = 'nav-group-items';
+            const groupDiv = document.createElement('div'); 
+            groupDiv.className = 'nav-group';
+            const header = document.createElement('div'); 
+            header.className = 'nav-group-header';
+            header.innerHTML = `<span class="nav-group-title">${g.title}</span><i data-lucide="chevron-down" class="nav-group-toggle-icon"></i>`;
+            const itemsDiv = document.createElement('div'); 
+            itemsDiv.className = 'nav-group-items';
             g.items.forEach(i => createNavItem(i, itemsDiv));
             header.onclick = () => {
               const isCollapsed = groupDiv.classList.contains('collapsed');
-              if (isCollapsed) { groupDiv.classList.remove('collapsed'); itemsDiv.style.maxHeight = itemsDiv.scrollHeight + 'px'; }
-              else { groupDiv.classList.add('collapsed'); itemsDiv.style.maxHeight = '0px'; }
+              if (isCollapsed) { 
+                groupDiv.classList.remove('collapsed'); 
+                itemsDiv.style.maxHeight = itemsDiv.scrollHeight + 'px'; 
+              } else { 
+                groupDiv.classList.add('collapsed'); 
+                itemsDiv.style.maxHeight = '0px'; 
+              }
             };
-            groupDiv.appendChild(header); groupDiv.appendChild(itemsDiv);
+            groupDiv.appendChild(header);
+            groupDiv.appendChild(itemsDiv);
             navContainer.appendChild(groupDiv);
           });
+          
+          // Initialiseer Lucide icons
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+          }
         }
 
         function openSearch() {
@@ -411,8 +429,15 @@
           }
           searchResults.innerHTML = results.map(item => {
             const preview = item.content ? item.content.replace(/[#*`]/g, '').substring(0, 80) + '...' : '';
-            return `<div class="search-result-item" data-id="${item.id}"><span style="opacity:.4;margin-right:8px;">📄</span><div class="search-result-info"><span class="search-result-label">${item.label}</span><span class="search-result-preview">${preview}</span></div></div>`;
+            const iconName = item.icon || 'file-text';
+            return `<div class="search-result-item" data-id="${item.id}"><i data-lucide="${iconName}" size="18" class="search-icon-grey"></i><div class="search-result-info"><span class="search-result-label">${item.label}</span><span class="search-result-preview">${preview}</span></div></div>`;
           }).join('');
+          
+          // Initialiseer Lucide icons in search results
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+          }
+          
           document.querySelectorAll('.search-result-item').forEach(el => {
             el.onclick = () => { scrollToSection(el.dataset.id); closeSearch(); };
           });
