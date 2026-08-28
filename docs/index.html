@@ -40,13 +40,26 @@
       --code-header-bg: #070707;
       --code-text: #c8c8c8;
       --inline-code-text: #7aa9ff;
-      --sh-comment: #555;
-      --sh-punctuation: #999;
-      --sh-property: #f28b82;
-      --sh-string: #8ddf9b;
-      --sh-keyword: #7aa9ff;
-      --sh-function: #c7a0ff;
-      --sh-variable: #f7b773;
+      /* Lichte syntax highlighting kleuren */
+      --sh-comment: #6a9955;
+      --sh-punctuation: #d4d4d4;
+      --sh-property: #ce9178;
+      --sh-string: #ce9178;
+      --sh-keyword: #569cd6;
+      --sh-function: #dcdcaa;
+      --sh-variable: #9cdcfe;
+      --sh-operator: #d4d4d4;
+      --sh-number: #b5cea8;
+      --sh-boolean: #569cd6;
+      --sh-class: #4ec9b0;
+      --sh-tag: #569cd6;
+      --sh-attr: #9cdcfe;
+      --sh-selector: #d7ba7d;
+      --sh-builtin: #4ec9b0;
+      --sh-regex: #d16969;
+      --sh-important: #c586c0;
+      --sh-deleted: #ce9178;
+      --sh-inserted: #ce9178;
       --scrollbar-bg: #0a0a0a;
       --scrollbar-thumb: #2a2a2a;
       --scrollbar-thumb-hover: #3a3a3a;
@@ -90,7 +103,7 @@
     
     main { flex: 1; overflow-y: auto; padding: 56px 0 0 0; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; position: relative; }            
     
-    .theme-toggle-wrapper { display: none; } /* forced dark */
+    .theme-toggle-wrapper { display: none; }
     
     .content-inner { width: 100%; max-width: 820px; padding: 0 48px 40px 48px; }      
     .doc-section { padding-top: 40px; margin-bottom: 20px; }      
@@ -137,14 +150,34 @@
     pre[class*="language-"] { margin: 0 !important; padding: 20px !important; font-size: 13.5px !important; overflow-x: auto; background: transparent !important; font-family: 'JetBrains Mono', monospace; color: var(--code-text); }      
     pre[class*="language-"] code { padding: 0 !important; margin: 0 !important; background: transparent !important; font-family: inherit; font-size: inherit; border-radius: 0; text-shadow: none; color: inherit; white-space: pre; position: static; }            
     
+    /* Lichte syntax highlighting (geen donkere kleuren) */
     .token { background: none !important; border: none !important; box-shadow: none !important; padding: 0 !important; }      
     .token.comment { color: var(--sh-comment); }      
-    .token.punctuation, .token.operator, .token.namespace { color: var(--sh-punctuation); }      
-    .token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol, .token.deleted { color: var(--sh-property); }      
-    .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: var(--sh-string); }      
-    .token.atrule, .token.attr-value, .token.keyword { color: var(--sh-keyword); }      
-    .token.function, .token.class-name { color: var(--sh-function); }      
-    .token.regex, .token.important, .token.variable { color: var(--sh-variable); }
+    .token.punctuation { color: var(--sh-punctuation); }
+    .token.operator { color: var(--sh-operator); }
+    .token.namespace { color: var(--sh-punctuation); }
+    .token.property { color: var(--sh-property); }
+    .token.tag { color: var(--sh-tag); }
+    .token.boolean { color: var(--sh-boolean); }
+    .token.number { color: var(--sh-number); }
+    .token.constant { color: var(--sh-number); }
+    .token.symbol { color: var(--sh-property); }
+    .token.deleted { color: var(--sh-deleted); }
+    .token.selector { color: var(--sh-selector); }
+    .token.attr-name { color: var(--sh-attr); }
+    .token.string { color: var(--sh-string); }
+    .token.char { color: var(--sh-string); }
+    .token.builtin { color: var(--sh-builtin); }
+    .token.inserted { color: var(--sh-inserted); }
+    .token.atrule { color: var(--sh-keyword); }
+    .token.attr-value { color: var(--sh-string); }
+    .token.keyword { color: var(--sh-keyword); }
+    .token.function { color: var(--sh-function); }
+    .token.class-name { color: var(--sh-class); }
+    .token.regex { color: var(--sh-regex); }
+    .token.important { color: var(--sh-important); }
+    .token.variable { color: var(--sh-variable); }
+    .token.maybe-class-name { color: var(--sh-class); }
 
     .skeleton { background: var(--skeleton-bg); position: relative; overflow: hidden; border-radius: 4px; min-height: 1em; min-width: 3em; }      
     .skeleton::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0; transform: translateX(-100%); background: linear-gradient(90deg,transparent,var(--skeleton-shine),transparent); animation: shimmer 1.5s infinite; }      
@@ -339,13 +372,11 @@
           Prism.highlightAll();
         }
 
-        // FIXED: Gebruik Lucide icons uit de JSON
         function createNavItem(item, container) {
           const el = document.createElement('div');
           el.className = 'nav-item';
           el.id = `nav-${item.id}`;
           
-          // Gebruik het icon uit de JSON of fallback naar 'file-text'
           const iconName = item.icon || 'file-text';
           el.innerHTML = `<i data-lucide="${iconName}" class="nav-icon"></i><span>${item.label}</span>`;
           
@@ -388,7 +419,6 @@
             navContainer.appendChild(groupDiv);
           });
           
-          // Initialiseer Lucide icons
           if (typeof lucide !== 'undefined') {
             lucide.createIcons();
           }
@@ -433,7 +463,6 @@
             return `<div class="search-result-item" data-id="${item.id}"><i data-lucide="${iconName}" size="18" class="search-icon-grey"></i><div class="search-result-info"><span class="search-result-label">${item.label}</span><span class="search-result-preview">${preview}</span></div></div>`;
           }).join('');
           
-          // Initialiseer Lucide icons in search results
           if (typeof lucide !== 'undefined') {
             lucide.createIcons();
           }
