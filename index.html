@@ -19,17 +19,40 @@
             --font-mono: Menlo, Monaco, Lucida Console, "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
         }
 
+        /* Custom Scrollbars (Both ways / Vertical & Horizontal) */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--accents-2) var(--bg-color);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accents-2);
+            border-radius: 4px;
+            border: 2px solid var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--purple-subtle);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
         }
-
         html {
             scroll-behavior: smooth;
         }
-
         body {
             background-color: var(--bg-color);
             color: var(--fg-color);
@@ -37,10 +60,19 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
-
         a {
             text-decoration: none;
             color: inherit;
+        }
+
+        /* Simple Solid Grey HR */
+        hr.custom-divider {
+            border: none;
+            height: 1px;
+            background-color: var(--accents-2);
+            margin: 0 auto;
+            max-width: 1200px;
+            width: 100%;
         }
 
         /* Header Navigation */
@@ -58,7 +90,6 @@
             display: flex;
             align-items: center;
         }
-
         nav {
             max-width: 1200px;
             width: 100%;
@@ -68,12 +99,10 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .nav-left {
             display: flex;
             align-items: center;
         }
-
         .logo-text {
             font-weight: 800;
             font-size: 1.2rem;
@@ -81,19 +110,16 @@
             display: flex;
             align-items: center;
         }
-
         .logo-text span {
             color: var(--fg-color);
             font-weight: 400;
             margin-left: 2px;
         }
-
         .nav-right {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
-
         .btn-social {
             background: var(--fg-color);
             color: var(--bg-color);
@@ -108,19 +134,16 @@
             transition: border-color 0.15s ease, opacity 0.15s ease;
             white-space: nowrap;
         }
-
         .btn-social:hover {
             opacity: 0.9;
             border-color: var(--purple-subtle);
         }
-
         .btn-social svg {
             width: 14px;
             height: 14px;
             fill: currentColor;
             flex-shrink: 0;
         }
-
         .btn-docs {
             background: transparent;
             color: var(--fg-color);
@@ -131,11 +154,9 @@
             font-weight: 500;
             transition: border-color 0.15s ease;
         }
-
         .btn-docs:hover {
             border-color: var(--purple-subtle);
         }
-
         /* Hero Section */
         .hero {
             position: relative;
@@ -150,28 +171,37 @@
             background-color: var(--bg-color);
             overflow: hidden;
         }
-
         .hero-background {
             position: absolute;
             inset: 0;
             background-image: 
-                linear-gradient(to right, var(--border-grid) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--border-grid) 1px, transparent 1px);
-            background-size: 80px 80px;
+                linear-gradient(to right, var(--border-grid) 1px, transparent 1px), 
+                linear-gradient(to bottom, var(--border-grid) 1px, transparent 1px),
+                url('https://animation-files.bleuje.com/2019/2019_16_3dlines.gif');
+            background-size: 80px 80px, 80px 80px, cover;
+            background-repeat: repeat, repeat, no-repeat;
+            background-position: 0 0, 0 0, center center;
             z-index: 1;
             pointer-events: none;
         }
-
+        /* Donkerder maken van de GIF background via een overlay pseudo-element */
+        .hero-background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 3, 3, 0.82);
+            z-index: 2;
+            pointer-events: none;
+        }
         .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             max-width: 1000px;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
         .announcement-pill {
             display: inline-flex;
             align-items: center;
@@ -186,12 +216,10 @@
             max-width: 100%;
             text-align: center;
         }
-
         .announcement-pill span {
             color: var(--fg-color);
             font-weight: 500;
         }
-
         h1.hero-title {
             font-size: 3.75rem;
             font-weight: 800;
@@ -201,7 +229,6 @@
             color: #ffffff;
             width: 100%;
         }
-
         .hero-description {
             font-size: 1.15rem;
             color: var(--accents-text);
@@ -209,7 +236,6 @@
             line-height: 1.65;
             margin-bottom: 2.5rem;
         }
-
         .hero-actions {
             display: flex;
             align-items: center;
@@ -218,7 +244,6 @@
             width: 100%;
             flex-wrap: wrap;
         }
-
         .btn-primary-hero {
             background: var(--fg-color);
             color: var(--bg-color);
@@ -229,12 +254,10 @@
             border: 1px solid transparent;
             transition: opacity 0.15s ease, border-color 0.15s ease;
         }
-
         .btn-primary-hero:hover {
             opacity: 0.9;
             border-color: var(--purple-subtle);
         }
-
         .btn-secondary-hero {
             background-color: var(--accents-1);
             color: var(--fg-color);
@@ -245,26 +268,22 @@
             font-size: 0.95rem;
             transition: border-color 0.15s ease, background 0.15s ease;
         }
-
         .btn-secondary-hero:hover {
             border-color: var(--purple-subtle);
             background: #111;
         }
-
         /* Features / Capabilities Grid */
         .features-section {
             position: relative;
             padding: 5rem 1.5rem;
             max-width: 1200px;
             margin: 0 auto;
-            z-index: 2;
+            z-index: 3;
         }
-
         .section-header {
             text-align: center;
             margin-bottom: 3.5rem;
         }
-
         .section-header h2 {
             font-size: 2.5rem;
             font-weight: 800;
@@ -272,19 +291,16 @@
             color: #ffffff;
             margin-bottom: 1rem;
         }
-
         .section-header p {
             color: var(--accents-text);
             font-size: 1.1rem;
             padding: 0 1rem;
         }
-
         .features-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
-
         .feature-card {
             background: var(--accents-1);
             border: 1px solid var(--accents-2);
@@ -292,33 +308,28 @@
             padding: 2rem;
             transition: border-color 0.2s ease;
         }
-
         .feature-card:hover {
             border-color: var(--purple-subtle);
         }
-
         .feature-card h3 {
             font-size: 1.25rem;
             font-weight: 600;
             color: #fff;
             margin-bottom: 0.75rem;
         }
-
         .feature-card p {
             font-size: 0.95rem;
             color: var(--accents-text);
             line-height: 1.5;
         }
-
         /* Showcase Code Section */
         .showcase-section {
             position: relative;
             padding: 3rem 1.5rem 5rem 1.5rem;
             max-width: 900px;
             margin: 0 auto;
-            z-index: 2;
+            z-index: 3;
         }
-
         .code-box {
             background: var(--accents-1);
             border: 1px solid var(--accents-2);
@@ -328,11 +339,9 @@
             flex-direction: column;
             transition: border-color 0.2s ease;
         }
-
         .code-box:hover {
             border-color: var(--purple-subtle);
         }
-
         .box-header {
             padding: 12px 18px;
             border-bottom: 1px solid var(--accents-2);
@@ -345,7 +354,6 @@
             background: rgba(255, 255, 255, 0.01);
             gap: 10px;
         }
-
         .code-preview {
             padding: 1.25rem;
             font-family: var(--font-mono);
@@ -355,12 +363,10 @@
             line-height: 1.6;
             -webkit-overflow-scrolling: touch;
         }
-
-        .code-preview .tag { color: #ff7b72; }
-        .code-preview .attr { color: #79c0ff; }
-        .code-preview .string { color: #a5d6ff; }
+        .code-preview .tag { color: #ff7b72; } 
+        .code-preview .attr { color: #79c0ff; } 
+        .code-preview .string { color: #a5d6ff; } 
         .code-preview .comment { color: #8b949e; }
-
         /* Footer */
         footer {
             border-top: 1px solid var(--accents-2);
@@ -370,89 +376,72 @@
             font-size: 0.85rem;
             background: var(--bg-color);
             position: relative;
-            z-index: 2;
+            z-index: 3;
         }
-
         footer p span {
             color: var(--fg-color);
             font-weight: 500;
         }
-
         /* Mobile Responsive Breakpoints */
         @media (max-width: 1024px) {
             .features-grid {
                 grid-template-columns: 1fr;
             }
         }
-
         @media (max-width: 768px) {
             nav {
                 padding: 0 1rem;
             }
-
             .nav-right {
                 gap: 0.5rem;
             }
-
             .btn-social, .btn-docs {
                 padding: 6px 10px;
                 font-size: 0.8rem;
             }
-
             .btn-social svg {
                 width: 12px;
                 height: 12px;
             }
-
             .hero {
                 padding: 3rem 1rem;
             }
-
             h1.hero-title {
                 font-size: 2.5rem;
                 letter-spacing: -1.5px;
                 white-space: normal;
             }
-
             .hero-description {
                 font-size: 1rem;
             }
-
             .hero-actions {
                 flex-direction: column;
                 width: 100%;
             }
-
             .btn-primary-hero, .btn-secondary-hero {
                 width: 100%;
                 text-align: center;
             }
-
             .section-header h2 {
                 font-size: 2rem;
                 letter-spacing: -1px;
             }
-
             .features-section, .showcase-section {
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
-
             .feature-card {
                 padding: 1.5rem;
             }
         }
-
         @media (max-width: 480px) {
             .announcement-pill {
                 font-size: 0.75rem;
                 padding: 5px 10px;
             }
-
             h1.hero-title {
                 font-size: 2.1rem;
             }
-
             .code-preview {
                 font-size: 0.75rem;
                 padding: 1rem;
@@ -461,7 +450,6 @@
     </style>
 </head>
 <body>
-
     <header>
         <nav>
             <div class="nav-left">
@@ -480,7 +468,6 @@
             </div>
         </nav>
     </header>
-
     <main>
         <section class="hero">
             <div class="hero-background"></div>
@@ -498,6 +485,9 @@
                 </div>
             </div>
         </section>
+
+        <!-- Simple Solid Grey HR Divider -->
+        <hr class="custom-divider">
 
         <section class="features-section">
             <div class="section-header">
@@ -520,6 +510,9 @@
             </div>
         </section>
 
+        <!-- Simple Solid Grey HR Divider -->
+        <hr class="custom-divider">
+
         <section id="showcase" class="showcase-section">
             <div class="section-header">
                 <h2>Effortless integration.</h2>
@@ -531,10 +524,7 @@
                     <span>HTML / JS</span>
                 </div>
                 <pre class="code-preview"><span class="comment">&lt;!-- Drop the custom element --&gt;</span>
-<span class="tag">&lt;nex-game</span> 
-  <span class="attr">alias</span>=<span class="string">"crossy-road"</span> 
-  <span class="attr">gid</span>=<span class="string">"game-1"</span><span class="tag">&gt;</span>
-<span class="tag">&lt;/nex-game&gt;</span>
+<span class="tag">&lt;nex-game</span> <span class="attr">alias</span>=<span class="string">"crossy-road"</span> <span class="attr">gid</span>=<span class="string">"game-1"</span><span class="tag">&gt;&lt;/nex-game&gt;</span>
 
 <span class="comment">&lt;!-- Control via reactive API --&gt;</span>
 <span class="tag">&lt;script&gt;</span>
@@ -545,10 +535,8 @@
             </div>
         </section>
     </main>
-
     <footer>
         <p>&copy; 2026 <span>Nex Platform</span>. All rights reserved.</p>
     </footer>
-
 </body>
 </html>
