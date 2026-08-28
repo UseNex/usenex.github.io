@@ -7,7 +7,7 @@
           "id": "overview",
           "label": "Overview",
           "icon": "rocket",
-          "content": "# NexGame Component\n\n`NexGame` is a lightweight, performance-optimized custom HTML5 element (`<nex-game>`) designed to fetch, cache, and securely execute web games.\n\n## Key Features\n- Race-fetch strategy across multiple CDN nodes\n- Aggressive Cache Storage caching (minimizes cellular data usage)\n- Isolated, high-permission sandbox iframe execution\n- Self-healing runtime with hot-reload capabilities\n\n## Installation\n```html\n<script src=\"https://cdn.jsdelivr.net/gh/usenex/nex-js@f10e7a480b7d1d3b5af4b0e3066d8115f7f0c356/nex.min.js\"></script>\n```"
+          "content": "# NexGame Component\n\n`NexGame` is a lightweight, performance-optimized custom HTML5 element (`<nex-game>`) designed to fetch, cache, and securely execute web games.\n\n## Key Features\n- Race-fetch strategy across multiple CDN nodes\n- Aggressive Cache Storage caching (minimizes cellular data usage)\n- Isolated, high-permission sandbox iframe execution\n- Self-healing runtime with hot-reload capabilities\n\n## Installation\n```html\n<script src=\"https://cdn.jsdelivr.net/gh/UseNex/nex-js@29956e0a2c5316c2f0a1d803dc0c313d206ce429/nex.min.js\"></script>\n```"
         }
       ]
     },
@@ -87,7 +87,7 @@
           "id": "basic-usage",
           "label": "Basic Usage",
           "icon": "code",
-          "content": "# Basic Usage Example\n\nComplete example of loading and starting a game with the NexGame component.\n\n## HTML\n```html\n<!DOCTYPE html>\n<html>\n<head>\n  <script src=\"https://cdn.jsdelivr.net/gh/usenex/nex-js@f10e7a480b7d1d3b5af4b0e3066d8115f7f0c356/nex.min.js\"></script>\n</head>\n<body>\n  <nex-game alias=\"fnaf\" gid=\"my-game-1\"></nex-game>\n\n  <script>\n    const gid = \"my-game-1\"\n    \n    window.nex[gid].on(\"progress\", (data) => {\n      console.log(`Loading progress: ${data.progress}%`)\n    })\n\n    window.nex[gid].on(\"ready\", () => {\n      console.log(\"Game ready!\")\n      window.nex[gid].start()\n    })\n\n    window.nex[gid].on(\"error\", (err) => {\n      console.error(\"Game error:\", err.message)\n    })\n  </script>\n</body>\n</html>\n```"
+          "content": "# Basic Usage Example\n\nComplete example of loading and starting a game with the NexGame component.\n\n## HTML\n```html\n<!DOCTYPE html>\n<html>\n<head>\n  <script src=\"https://cdn.jsdelivr.net/gh/UseNex/nex-js@29956e0a2c5316c2f0a1d803dc0c313d206ce429/nex.min.js\"></script>\n</head>\n<body>\n  <nex-game alias=\"fnaf\" gid=\"my-game-1\"></nex-game>\n\n  <script>\n    const gid = \"my-game-1\"\n    \n    window.nex[gid].on(\"progress\", (data) => {\n      console.log(`Loading progress: ${data.progress}%`)\n    })\n\n    window.nex[gid].on(\"ready\", () => {\n      console.log(\"Game ready!\")\n      window.nex[gid].start()\n    })\n\n    window.nex[gid].on(\"error\", (err) => {\n      console.error(\"Game error:\", err.message)\n    })\n  </script>\n</body>\n</html>\n```"
         },
         {
           "id": "dynamic-loading",
