@@ -38,28 +38,8 @@
       --border-color: #1a1a1a;
       --code-bg: #0a0a0a;
       --code-header-bg: #070707;
-      --code-text: #c8c8c8;
+      --code-text: #d4d4d4;
       --inline-code-text: #7aa9ff;
-      /* Lichte syntax highlighting kleuren */
-      --sh-comment: #6a9955;
-      --sh-punctuation: #d4d4d4;
-      --sh-property: #ce9178;
-      --sh-string: #ce9178;
-      --sh-keyword: #569cd6;
-      --sh-function: #dcdcaa;
-      --sh-variable: #9cdcfe;
-      --sh-operator: #d4d4d4;
-      --sh-number: #b5cea8;
-      --sh-boolean: #569cd6;
-      --sh-class: #4ec9b0;
-      --sh-tag: #569cd6;
-      --sh-attr: #9cdcfe;
-      --sh-selector: #d7ba7d;
-      --sh-builtin: #4ec9b0;
-      --sh-regex: #d16969;
-      --sh-important: #c586c0;
-      --sh-deleted: #ce9178;
-      --sh-inserted: #ce9178;
       --scrollbar-bg: #0a0a0a;
       --scrollbar-thumb: #2a2a2a;
       --scrollbar-thumb-hover: #3a3a3a;
@@ -142,42 +122,47 @@
     .search-empty-hint { padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 14px; }      
     .search-icon-grey { color: #555 !important; }             
     
+    /* Codebox styling */
     .code-section { margin: 36px 0; background: var(--code-bg); border-radius: var(--radius); border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.7); }      
     .code-header { background: var(--code-header-bg); padding: 0 18px; display: flex; align-items: center; justify-content: space-between; height: 48px; border-bottom: 1px solid var(--border-color); }      
     .code-tab { font-size: 12px; font-weight: 500; color: var(--text-muted); padding: 4px 8px; }      
     .copy-button { background: none; border: none; width: 32px; height: 32px; cursor: pointer; color: #555; display: flex; align-items: center; justify-content: center; outline: none; transition: color 0.2s; border-radius: 4px; }      
     .copy-button:hover { color: var(--text-main); background: var(--bg-subtle); }            
-    pre[class*="language-"] { margin: 0 !important; padding: 20px !important; font-size: 13.5px !important; overflow-x: auto; background: transparent !important; font-family: 'JetBrains Mono', monospace; color: var(--code-text); }      
-    pre[class*="language-"] code { padding: 0 !important; margin: 0 !important; background: transparent !important; font-family: inherit; font-size: inherit; border-radius: 0; text-shadow: none; color: inherit; white-space: pre; position: static; }            
-    
-    /* Lichte syntax highlighting (geen donkere kleuren) */
-    .token { background: none !important; border: none !important; box-shadow: none !important; padding: 0 !important; }      
-    .token.comment { color: var(--sh-comment); }      
-    .token.punctuation { color: var(--sh-punctuation); }
-    .token.operator { color: var(--sh-operator); }
-    .token.namespace { color: var(--sh-punctuation); }
-    .token.property { color: var(--sh-property); }
-    .token.tag { color: var(--sh-tag); }
-    .token.boolean { color: var(--sh-boolean); }
-    .token.number { color: var(--sh-number); }
-    .token.constant { color: var(--sh-number); }
-    .token.symbol { color: var(--sh-property); }
-    .token.deleted { color: var(--sh-deleted); }
-    .token.selector { color: var(--sh-selector); }
-    .token.attr-name { color: var(--sh-attr); }
-    .token.string { color: var(--sh-string); }
-    .token.char { color: var(--sh-string); }
-    .token.builtin { color: var(--sh-builtin); }
-    .token.inserted { color: var(--sh-inserted); }
-    .token.atrule { color: var(--sh-keyword); }
-    .token.attr-value { color: var(--sh-string); }
-    .token.keyword { color: var(--sh-keyword); }
-    .token.function { color: var(--sh-function); }
-    .token.class-name { color: var(--sh-class); }
-    .token.regex { color: var(--sh-regex); }
-    .token.important { color: var(--sh-important); }
-    .token.variable { color: var(--sh-variable); }
-    .token.maybe-class-name { color: var(--sh-class); }
+    pre[class*="language-"] { 
+      margin: 0 !important; 
+      padding: 20px !important; 
+      font-size: 13.5px !important; 
+      overflow-x: auto; 
+      background: #0a0a0a !important; 
+      font-family: 'JetBrains Mono', monospace; 
+      border: none !important;
+      box-shadow: none !important;
+    }      
+    pre[class*="language-"] code { 
+      padding: 0 !important; 
+      margin: 0 !important; 
+      background: transparent !important; 
+      font-family: inherit; 
+      font-size: inherit; 
+      border-radius: 0; 
+      text-shadow: none; 
+      white-space: pre; 
+      position: static; 
+    }
+
+    /* Verwijder de oranje rand van Prism dark thema */
+    pre[class*="language-"]::before,
+    pre[class*="language-"]::after {
+      display: none !important;
+      content: none !important;
+    }
+
+    /* Verwijder alle borders en box-shadows die Prism toevoegt */
+    .code-section pre[class*="language-"] {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
 
     .skeleton { background: var(--skeleton-bg); position: relative; overflow: hidden; border-radius: 4px; min-height: 1em; min-width: 3em; }      
     .skeleton::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0; transform: translateX(-100%); background: linear-gradient(90deg,transparent,var(--skeleton-shine),transparent); animation: shimmer 1.5s infinite; }      
@@ -203,7 +188,7 @@
     }
 
     /* extra dark overrides */
-    body, #sidebar, .sidebar-footer, .search-modal, .code-section, .code-header, pre[class*="language-"] {
+    body, #sidebar, .sidebar-footer, .search-modal, .code-section, .code-header {
       background: #050505 !important;
     }
     #sidebar { background: #080808 !important; }
@@ -224,9 +209,10 @@
     th { background: #0a0a0a !important; }
     blockquote { background: #0a0a0a !important; }
   </style>
-  <!-- Fonts & Prism -->
+  <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+  <!-- Officieel PrismJS DARK thema -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-dark.min.css">
 </head>
 <body>
   <div id="sidebar-overlay"></div>
@@ -258,6 +244,7 @@
   </main>
 
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Officiële PrismJS core en components -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
