@@ -36,13 +36,6 @@ Add the Nex script to your HTML page:
 <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js"></script>
 ```
 
-#### Version History
-
-| Version | Commit | Features |
-|---------|--------|----------|
-| 2.0 | `78fe881` | Built-in loader + custom loader mode with `loading-screen` attribute |
-| 1.x | `351eb40` | Basic game loading only |
-
 #### Available Games
 
 To see all available games, use the metadata API:
