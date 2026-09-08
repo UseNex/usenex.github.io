@@ -10,7 +10,7 @@
           "id": "overview",
           "label": "What is Nex?",
           "icon": "rocket",
-          "content": "# Nex Game Platform\n\nNex is a lightweight HTML5 game platform that lets you embed and play web games with minimal setup. With version 2.0, you can choose between a built-in elegant loader or create your own custom loading experience.\n\n## Quick Start\n\nAdd the Nex script to your HTML:\n\n```html\n<script src=\"https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js\"></script>\n```\n\nThen use the `<nex-game>` element:\n\n```html\n<!-- Built-in loader (white ring + blur) -->\n<nex-game alias=\"2048\" gid=\"my-game-1\"></nex-game>\n\n<!-- Or with custom loader mode -->\n<nex-game alias=\"granny\" gid=\"my-game-2\" loading-screen=\"true\"></nex-game>\n```\n\nThat's it! The game will automatically load and be ready to play."
+          "content": "# Nex Game Platform\n\nNex is a lightweight HTML5 game platform that lets you embed and play web games with minimal setup. With version 1.1, you can choose between a built-in elegant loader or create your own custom loading experience.\n\n## Quick Start\n\nAdd the Nex script to your HTML:\n\n```html\n<script src=\"https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js\"></script>\n```\n\nThen use the `<nex-game>` element:\n\n```html\n<!-- Built-in loader (white ring + blur) -->\n<nex-game alias=\"2048\" gid=\"my-game-1\"></nex-game>\n\n<!-- Or with custom loader mode -->\n<nex-game alias=\"granny\" gid=\"my-game-2\" loading-screen=\"true\"></nex-game>\n```\n\nThat's it! The game will automatically load and be ready to play."
         },
         {
           "id": "installation",
