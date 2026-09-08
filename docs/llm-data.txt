@@ -1,24 +1,27 @@
-
 # Nex Game Platform - Complete Documentation
 
 ## Getting Started
 
 ### What is Nex?
 
-Nex is a lightweight HTML5 game platform that lets you embed and play web games with minimal setup.
+Nex is a lightweight HTML5 game platform that lets you embed and play web games with minimal setup. Version 2.0 introduces a flexible loading screen system with both built-in and custom loader options.
 
 #### Quick Start
 
-Add the Nex script to your HTML:
+Add the Nex script to your HTML using the latest commit hash:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@351eb401e69c1027a496ef0c46324bf29697a092/nex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js"></script>
 ```
 
 Then use the `<nex-game>` element:
 
 ```html
+<!-- Built-in loader (white ring + blur background) -->
 <nex-game alias="2048" gid="my-game-1"></nex-game>
+
+<!-- Custom loader mode (no built-in loader) -->
+<nex-game alias="granny" gid="my-game-2" loading-screen="true"></nex-game>
 ```
 
 That's it! The game will automatically load and be ready to play.
@@ -30,17 +33,33 @@ That's it! The game will automatically load and be ready to play.
 Add the Nex script to your HTML page:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@351eb401e69c1027a496ef0c46324bf29697a092/nex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js"></script>
 ```
+
+#### Version History
+
+| Version | Commit | Features |
+|---------|--------|----------|
+| 2.0 | `78fe881` | Built-in loader + custom loader mode with `loading-screen` attribute |
+| 1.x | `351eb40` | Basic game loading only |
 
 #### Available Games
 
 To see all available games, use the metadata API:
 
 ```js
+// Get all game aliases
 const aliases = window.nex.metadata.getAllAliases()
+
+// Get metadata for a specific game
 const gameInfo = window.nex.metadata.get("2048")
-// { alias: "2048", name: "2048", category: "Puzzle", description: "...", img: "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@d31c14abee877357afdd6a44fa921199ba0033fa/2048.webp" }
+// {
+//   alias: "2048",
+//   name: "2048",
+//   category: "Puzzle",
+//   description: "Merge identical numbers to reach the legendary 2048 tile.",
+//   img: "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@78fe8819c6460911bb87b050862b30bc10d43e0a/2048.webp"
+// }
 ```
 
 ---
@@ -53,12 +72,39 @@ const gameInfo = window.nex.metadata.get("2048")
 |-----------|------|----------|-------------|
 | `alias` | string | Yes | Game identifier (e.g., "fnaf", "2048") |
 | `gid` | string | Yes | Unique session ID for your game instance |
+| `loading-screen` | string | No | `"true"` = custom loader mode, `"false"` = built-in loader (default) |
+
+#### Loading Screen Modes
+
+**Built-in Loader (Default)**
+Shows a beautiful white ring with blur background, percentage counter, and game title.
+
+```html
+<nex-game alias="2048" gid="game-1"></nex-game>
+<!-- or explicitly -->
+<nex-game alias="2048" gid="game-1" loading-screen="false"></nex-game>
+```
+
+**Custom Loader Mode**
+No built-in loader is shown. You must provide your own loading UI using the progress events.
+
+```html
+<nex-game alias="granny" gid="game-2" loading-screen="true"></nex-game>
+```
 
 #### Example
 
 ```html
+<!-- With built-in loader -->
 <nex-game alias="fnaf" gid="game-123"></nex-game>
-<nex-game alias="2048" gid="puzzle-game" style="width:800px;height:600px;"></nex-game>
+
+<!-- With custom loader mode and styling -->
+<nex-game 
+  alias="2048" 
+  gid="puzzle-game"
+  loading-screen="true"
+  style="width:800px;height:600px;"
+></nex-game>
 ```
 
 ### JavaScript API (window.nex)
@@ -70,26 +116,39 @@ const gameInfo = window.nex.metadata.get("2048")
 window.nex["my-game"].on("ready", () => console.log("Game loaded!"))
 ```
 
-**start()** - Start the game manually
+**start()** - Start the game manually (required in both modes)
 ```js
 window.nex["my-game"].start()
 ```
 
 #### Events
 
-| Event | When it fires |
-|-------|---------------|
-| `progress` | During loading (0-100%) |
-| `ready` | Game is fully loaded |
-| `error` | Something went wrong |
+| Event | When it fires | Mode |
+|-------|---------------|------|
+| `progress` | During loading (0-100%) | Custom mode only |
+| `ready` | Game is fully loaded | Both modes |
+| `error` | Something went wrong | Both modes |
 
-#### Complete Example
+#### Complete Example (Custom Loader)
 
 ```js
 const gid = "my-game"
-window.nex[gid].on("progress", (data) => console.log(`Loading: ${data.progress}%`))
-window.nex[gid].on("ready", () => { console.log("Ready to play!"); window.nex[gid].start() })
-window.nex[gid].on("error", (err) => console.error("Error:", err.message))
+
+window.nex[gid].on("progress", (data) => {
+  console.log(`Loading: ${data.progress}%`)
+  // Update your custom loader UI here
+})
+
+window.nex[gid].on("ready", () => {
+  console.log("Ready to play!")
+  // Hide your custom loader
+  document.getElementById('loader').style.display = 'none'
+  window.nex[gid].start() // Required!
+})
+
+window.nex[gid].on("error", (err) => {
+  console.error("Error:", err.message)
+})
 ```
 
 ---
@@ -100,7 +159,8 @@ window.nex[gid].on("error", (err) => console.error("Error:", err.message))
 
 **window.nex.metadata.getAllAliases()**
 ```js
-const games = window.nex.metadata.getAllAliases() // ['2048', 'fnaf', 'slope', ...]
+const games = window.nex.metadata.getAllAliases()
+// ['2048', 'fnaf', 'slope', ...]
 ```
 
 **window.nex.metadata.get(alias)**
@@ -128,7 +188,7 @@ interface GameMetadata {
   name: string         // Display name
   category: string     // Game genre/category
   description: string  // Short description
-  img: string          // Thumbnail URL (400x300px, 4:3 aspect ratio)
+  img: string          // Thumbnail URL (400x300px WebP)
 }
 ```
 
@@ -140,7 +200,7 @@ interface GameMetadata {
   "name": "Five Nights at Freddy's",
   "category": "Horror",
   "description": "Manage security room power and doors to survive creepy animatronic robots.",
-  "img": "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@d31c14abee877357afdd6a44fa921199ba0033fa/fnaf.webp"
+  "img": "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@78fe8819c6460911bb87b050862b30bc10d43e0a/fnaf.webp"
 }
 ```
 
@@ -149,7 +209,7 @@ interface GameMetadata {
 - **Dimensions**: 400px × 300px
 - **Aspect Ratio**: 4:3
 - **Format**: WebP
-- **URL**: `https://cdn.jsdelivr.net/gh/UseNex/thumbnails@d31c14abee877357afdd6a44fa921199ba0033fa/{alias}.webp`
+- **URL Pattern**: `https://cdn.jsdelivr.net/gh/UseNex/thumbnails@78fe8819c6460911bb87b050862b30bc10d43e0a/{alias}.webp`
 
 ### Categories
 
@@ -159,16 +219,17 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 
 ## Examples
 
-### Basic Usage
+### Basic Usage (Built-in Loader)
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@351eb401e69c1027a496ef0c46324bf29697a092/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js"></script>
   <style>body{margin:0;background:#000}nex-game{display:block;width:100vw;height:100vh}</style>
 </head>
 <body>
+  <!-- Uses built-in loader by default -->
   <nex-game alias="slope" gid="game-1"></nex-game>
   <script>
     const gid="game-1"
@@ -180,13 +241,66 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 </html>
 ```
 
+### Custom Loader Implementation
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js"></script>
+  <style>
+    body{margin:0;background:#0a0a0f}
+    #loader{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#0a0a0f;z-index:100;transition:opacity .5s}
+    #loader.hidden{opacity:0;pointer-events:none}
+    .spinner{width:50px;height:50px;border:3px solid rgba(255,255,255,0.1);border-top-color:#6366f1;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #progress-text{margin-top:20px;color:#888;font-family:system-ui;font-size:14px}
+    #error-text{margin-top:10px;color:#e11d48;font-family:system-ui;font-size:13px;display:none}
+    nex-game{display:block;width:100vw;height:100vh}
+  </style>
+</head>
+<body>
+  <div id="loader">
+    <div class="spinner"></div>
+    <div id="progress-text">0%</div>
+    <div id="error-text">Failed to load game</div>
+  </div>
+
+  <!-- Custom loader mode -->
+  <nex-game alias="granny" gid="game-1" loading-screen="true"></nex-game>
+
+  <script>
+    const gid="game-1"
+    const loader=document.getElementById('loader')
+    const progressText=document.getElementById('progress-text')
+    const errorText=document.getElementById('error-text')
+
+    window.nex[gid].on('progress',(data)=>{
+      progressText.textContent=`${Math.round(data.progress)}%`
+    })
+
+    window.nex[gid].on('ready',()=>{
+      loader.classList.add('hidden')
+      window.nex[gid].start()
+    })
+
+    window.nex[gid].on('error',(err)=>{
+      errorText.style.display='block'
+      errorText.textContent=`Error: ${err.message}`
+      progressText.textContent='Failed'
+    })
+  </script>
+</body>
+</html>
+```
+
 ### Game Gallery
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@351eb401e69c1027a496ef0c46324bf29697a092/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js"></script>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui;background:#0a0a0f;color:#fff;padding:20px}
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;max-width:1200px;margin:0 auto}
@@ -214,7 +328,7 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@351eb401e69c1027a496ef0c46324bf29697a092/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js"></script>
   <style>
     body{font-family:system-ui;background:#0a0a0f;color:#fff;padding:20px}
     .game-container{width:100%;height:80vh;margin-top:20px;border-radius:12px;overflow:hidden}
@@ -241,6 +355,53 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 </body>
 </html>
 ```
+
+---
+
+## Loading Screen Guide
+
+### Loader Modes
+
+Nex 2.0 introduces two loading screen modes to give you full control over the user experience.
+
+#### Built-in Loader (Default)
+
+When `loading-screen` is not set or set to `"false"`, Nex shows its elegant built-in loader.
+
+**Features:**
+- White circular progress ring
+- Blurred game thumbnail background
+- Percentage counter (0% - 100%)
+- Game title display
+- Smooth fade-out transition
+- Error message display
+
+```html
+<nex-game alias="granny" gid="game-1"></nex-game>
+```
+
+#### Custom Loader Mode
+
+When `loading-screen="true"`, Nex does NOT show any built-in loader. You must provide your own loading UI.
+
+**Features:**
+- No built-in UI elements
+- Full control over loading visuals
+- Progress events (0-100%)
+- Ready event to hide loader
+- Error event for failure handling
+
+```html
+<nex-game alias="granny" gid="game-1" loading-screen="true"></nex-game>
+```
+
+#### Event Flow Comparison
+
+| Event | Built-in Mode | Custom Mode |
+|-------|---------------|-------------|
+| `progress` | Fires (optional) | Fires (required for UI) |
+| `ready` | Fires, auto-starts | Fires, you must call `start()` |
+| `error` | Shows in loader | You handle in UI |
 
 ---
 
@@ -271,9 +432,26 @@ window.nex[gid].on('error',(err)=>{document.querySelector('.error').textContent=
 function removeGame(){const game=document.querySelector('nex-game');if(game)game.remove()}
 ```
 
-**5. Thumbnail Display**
+**5. Choose the Right Loader Mode**
+
+| Use Case | Recommended Mode |
+|----------|------------------|
+| Quick embed, no customization | Built-in loader (default) |
+| Branded loading experience | Custom loader (`loading-screen="true"`) |
+| Minimalist design | Custom loader |
+| Rapid prototyping | Built-in loader |
+
+**6. Thumbnail Display**
 ```css
 .game-thumbnail{width:100%;aspect-ratio:4/3;object-fit:cover}
+```
+
+**7. Cache for Faster Loading**
+After the first load, games are cached by the browser for faster subsequent loads.
+
+```js
+// Warm up the cache by preloading a game
+setTimeout(()=>{const p=document.createElement('nex-game');p.setAttribute('alias','2048');p.setAttribute('gid','preload');p.style.display='none';document.body.appendChild(p)},1000)
 ```
 
 ### Common Issues & Solutions
@@ -293,9 +471,70 @@ const gid=`game-${Date.now()}-${Math.random().toString(36).substr(2,6)}`
 window.nex[gid].on('ready',()=>{window.nex[gid].start()})
 ```
 
+**Built-in loader not showing**
+```html
+<!-- Built-in loader shows -->
+<nex-game alias="2048" gid="game-1"></nex-game>
+<!-- No built-in loader -->
+<nex-game alias="2048" gid="game-1" loading-screen="true"></nex-game>
+```
+
+**Custom loader not receiving progress events**
+```js
+window.nex[gid].on('progress',(data)=>{console.log(data.progress)}) // Requires loading-screen="true"
+```
+
 **Thumbnails not loading**
 ```js
 const game=window.nex.metadata.get('2048');if(game){console.log('Thumbnail URL:',game.img)}
 ```
 
 **CORS issues** - Serve your page through a local server instead of opening the file directly.
+
+**Game loads but screen is blank**
+```js
+window.nex[gid].on('ready',()=>{window.nex[gid].start()}) // Required in both modes!
+```
+
+---
+
+## Advanced: Custom Loader with Branding
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@78fe8819c6460911bb87b050862b30bc10d43e0a/nex.min.js"></script>
+  <style>
+    body{margin:0;background:#0a0a0f}
+    #loader{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);z-index:100;transition:opacity .6s}
+    #loader.hidden{opacity:0;pointer-events:none}
+    .brand{font-size:28px;font-weight:900;color:#fff;text-shadow:0 0 20px rgba(255,255,255,0.2);letter-spacing:6px;margin-bottom:30px}
+    .brand span{color:#f7d44a}
+    .progress-track{width:280px;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden}
+    .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#f7d44a,#f7a84a);transition:width .15s ease}
+    .percentage{margin-top:12px;font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:2px}
+    .status{margin-top:6px;font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:1px;text-transform:uppercase}
+    nex-game{display:block;width:100vw;height:100vh}
+  </style>
+</head>
+<body>
+  <div id="loader">
+    <div class="brand">Nex <span>Arcade</span></div>
+    <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="percentage" id="percentage">0%</div>
+    <div class="status" id="status">Initializing...</div>
+  </div>
+
+  <nex-game alias="granny" gid="game-1" loading-screen="true"></nex-game>
+
+  <script>
+    const gid="game-1",loader=document.getElementById('loader'),bar=document.getElementById('progress-bar'),pct=document.getElementById('percentage'),status=document.getElementById('status')
+    const STATUSES=['Initializing...','Loading game...','Almost ready...','Ready! 🎮']
+    let last=0
+    window.nex[gid].on('progress',(data)=>{const p=Math.round(data.progress);bar.style.width=p+'%';pct.textContent=p+'%';let idx=p>=100?3:p>=70?2:p>=30?1:0;if(idx!==last){last=idx;status.textContent=STATUSES[idx]}})
+    window.nex[gid].on('ready',()=>{loader.classList.add('hidden');window.nex[gid].start()})
+    window.nex[gid].on('error',(err)=>{status.textContent='❌ Error';pct.textContent='Failed';console.error(err)})
+  </script>
+</body>
+</html>
