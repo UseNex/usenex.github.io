@@ -4,7 +4,7 @@
 
 ### What is Nex?
 
-Nex is a lightweight HTML5 game platform that lets you embed and play web games with minimal setup. Version 2.0 introduces a flexible loading screen system with both built-in and custom loader options.
+Nex is a lightweight HTML5 game platform that lets you embed and play web games with minimal setup. Version 1.1 introduces a flexible loading screen system with both built-in and custom loader options.
 
 #### Quick Start
 
