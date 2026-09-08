@@ -355,7 +355,7 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 
 ### Loader Modes
 
-Nex 2.0 introduces two loading screen modes to give you full control over the user experience.
+Nex 1.1 introduces two loading screen modes to give you full control over the user experience.
 
 #### Built-in Loader (Default)
 
