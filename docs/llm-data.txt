@@ -11,7 +11,7 @@ Nex is a lightweight HTML5 game platform that lets you embed and play web games 
 Add the Nex script to your HTML using the latest commit hash:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@f147b809c8ee2769218925cc0226b5a8a85dee61/nex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@afd45d45f9f5025481a999dde0379b5fbde5d9ce/nex.min.js"></script>
 ```
 
 Then use the `<nex-game>` element:
@@ -33,7 +33,7 @@ That's it! The game will automatically load and be ready to play.
 Add the Nex script to your HTML page:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@f147b809c8ee2769218925cc0226b5a8a85dee61/nex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@afd45d45f9f5025481a999dde0379b5fbde5d9ce/nex.min.js"></script>
 ```
 
 #### Available Games
@@ -51,7 +51,7 @@ const gameInfo = window.nex.metadata.get("2048")
 //   name: "2048",
 //   category: "Puzzle",
 //   description: "Merge identical numbers to reach the legendary 2048 tile.",
-//   img: "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@f147b809c8ee2769218925cc0226b5a8a85dee61/2048.webp"
+//   img: "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@afd45d45f9f5025481a999dde0379b5fbde5d9ce/2048.webp"
 // }
 ```
 
@@ -193,7 +193,7 @@ interface GameMetadata {
   "name": "Five Nights at Freddy's",
   "category": "Horror",
   "description": "Manage security room power and doors to survive creepy animatronic robots.",
-  "img": "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@f147b809c8ee2769218925cc0226b5a8a85dee61/fnaf.webp"
+  "img": "https://cdn.jsdelivr.net/gh/UseNex/thumbnails@afd45d45f9f5025481a999dde0379b5fbde5d9ce/fnaf.webp"
 }
 ```
 
@@ -202,7 +202,7 @@ interface GameMetadata {
 - **Dimensions**: 400px × 300px
 - **Aspect Ratio**: 4:3
 - **Format**: WebP
-- **URL Pattern**: `https://cdn.jsdelivr.net/gh/UseNex/thumbnails@f147b809c8ee2769218925cc0226b5a8a85dee61/{alias}.webp`
+- **URL Pattern**: `https://cdn.jsdelivr.net/gh/UseNex/thumbnails@afd45d45f9f5025481a999dde0379b5fbde5d9ce/{alias}.webp`
 
 ### Categories
 
@@ -218,7 +218,7 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@f147b809c8ee2769218925cc0226b5a8a85dee61/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@afd45d45f9f5025481a999dde0379b5fbde5d9ce/nex.min.js"></script>
   <style>body{margin:0;background:#000}nex-game{display:block;width:100vw;height:100vh}</style>
 </head>
 <body>
@@ -240,7 +240,7 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@f147b809c8ee2769218925cc0226b5a8a85dee61/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@afd45d45f9f5025481a999dde0379b5fbde5d9ce/nex.min.js"></script>
   <style>
     body{margin:0;background:#0a0a0f}
     #loader{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#0a0a0f;z-index:100;transition:opacity .5s}
@@ -293,7 +293,7 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@f147b809c8ee2769218925cc0226b5a8a85dee61/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@afd45d45f9f5025481a999dde0379b5fbde5d9ce/nex.min.js"></script>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui;background:#0a0a0f;color:#fff;padding:20px}
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;max-width:1200px;margin:0 auto}
@@ -321,7 +321,7 @@ Action, Puzzle, Strategy, Sports, Racing, Driving, Skill, Horror, Simulation, Sa
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@f147b809c8ee2769218925cc0226b5a8a85dee61/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@afd45d45f9f5025481a999dde0379b5fbde5d9ce/nex.min.js"></script>
   <style>
     body{font-family:system-ui;background:#0a0a0f;color:#fff;padding:20px}
     .game-container{width:100%;height:80vh;margin-top:20px;border-radius:12px;overflow:hidden}
@@ -497,7 +497,7 @@ window.nex[gid].on('ready',()=>{window.nex[gid].start()}) // Required in both mo
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@f147b809c8ee2769218925cc0226b5a8a85dee61/nex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@afd45d45f9f5025481a999dde0379b5fbde5d9ce/nex.min.js"></script>
   <style>
     body{margin:0;background:#0a0a0f}
     #loader{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);z-index:100;transition:opacity .6s}
