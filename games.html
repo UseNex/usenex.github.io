@@ -1,0 +1,2324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Nex Space</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<script src="https://cdn.jsdelivr.net/gh/UseNex/nex-js@30fe7b16c05f2ed825ebbcb1f7b54ec4e9091c40/nex.min.js"></script>
+
+<style>
+/* ============================================================
+   ROOT
+   ============================================================ */
+:root {
+    --background-color: #000;
+    --header-active-background-color: rgba(140, 0, 255, 0.55);
+    --header-hover-background-color: rgba(140, 0, 255, 0.13);
+    --input-background-color: #0a0a0a;
+    --border-color: #525252;
+    --text-color: #ffffff;
+    --hover-text-color: rgba(255, 255, 255, 0.49);
+    --active-text-color: rgba(255, 255, 255, 0.81);
+    --utility-background-color: rgb(22, 22, 22);
+    --utility-shadow-color: rgba(66, 66, 66, 0.86);
+    --hr-background: rgba(160, 160, 160, 0.274);
+    --navbar-background-color: rgb(22, 22, 22);
+    --page-text-color: rgba(82, 82, 82, 0.97);
+    --image-outline-color: #4400ff;
+    --button-background-color: #4400ff;
+    --button-gradient-color: linear-gradient(
+        304deg,
+        rgb(204, 0, 245) 0%,
+        #4400ff 100%
+    );
+    --settingsection-background-color: #0c0c0c;
+    --link-hover-color: #7d2ae8;
+    --settingsection-hr-background: rgba(255, 255, 255, 0.22);
+    --button-reg-background-color: rgb(22, 22, 22);
+    --button-reg-hover-background-color: rgb(25, 25, 25);
+    --button-reg-active-background-color: rgb(15, 15, 15);
+    --dshadow1: #ae00ff;
+    --dshadow2: #4400ff;
+    --dshadow3: #ff00d4;
+    --dshadow4: #8400ff;
+
+    --discord-color: #5865f2;
+
+    --logo-col: 60px;
+    --topbar-h: 56px;
+    --sb-btn-h: 40px;
+    --sb-icon-size: 20px;
+    --sb-padding: 5px;
+    --main-radius: 22px;
+    --main-margin: 10px;
+    --tile-radius: 22px;
+    --content-max: 1100px;
+    --content-padding: 60px 40px 140px;
+    --tiles-cols: 5;
+    --tiles-gap: 18px;
+    --tiles-max: 1040px;
+    --topbar-search-max: 900px;
+    --topbar-search-h: 34px;
+    --topbar-btn-size: 36px;
+    --topbar-icon-size: 20px;
+    --topbar-padding: 12px;
+
+    --topbar-search-gap: 50px;
+
+    --glow-intensity: 1;
+}
+
+/* ============================================================
+   THEMES
+   ============================================================ */
+:root[data-theme="blue"] {
+    --header-active-background-color: rgba(0, 120, 255, 0.55);
+    --header-hover-background-color: rgba(0, 120, 255, 0.13);
+    --image-outline-color: #0078ff;
+    --button-background-color: #0078ff;
+    --button-gradient-color: linear-gradient(304deg, rgb(0, 150, 255) 0%, #0078ff 100%);
+    --link-hover-color: #0078ff;
+    --dshadow1: #0099ff;
+    --dshadow2: #0078ff;
+    --dshadow3: #00bbff;
+    --dshadow4: #0055cc;
+}
+
+:root[data-theme="purple"] {
+    --header-active-background-color: rgba(140, 0, 255, 0.55);
+    --header-hover-background-color: rgba(140, 0, 255, 0.13);
+    --image-outline-color: #4400ff;
+    --button-background-color: #4400ff;
+    --button-gradient-color: linear-gradient(304deg, rgb(204, 0, 245) 0%, #4400ff 100%);
+    --link-hover-color: #7d2ae8;
+    --dshadow1: #ae00ff;
+    --dshadow2: #4400ff;
+    --dshadow3: #ff00d4;
+    --dshadow4: #8400ff;
+}
+
+:root[data-theme="green"] {
+    --header-active-background-color: rgba(0, 220, 130, 0.55);
+    --header-hover-background-color: rgba(0, 220, 130, 0.13);
+    --image-outline-color: #00dc82;
+    --button-background-color: #00dc82;
+    --button-gradient-color: linear-gradient(304deg, rgb(0, 245, 155) 0%, #00dc82 100%);
+    --link-hover-color: #00dc82;
+    --dshadow1: #00ff95;
+    --dshadow2: #00dc82;
+    --dshadow3: #00ffb3;
+    --dshadow4: #00aa66;
+}
+
+:root[data-theme="pink"] {
+    --header-active-background-color: rgba(255, 20, 147, 0.55);
+    --header-hover-background-color: rgba(255, 20, 147, 0.13);
+    --image-outline-color: #ff1493;
+    --button-background-color: #ff1493;
+    --button-gradient-color: linear-gradient(304deg, rgb(255, 105, 180) 0%, #ff1493 100%);
+    --link-hover-color: #ff1493;
+    --dshadow1: #ff69b4;
+    --dshadow2: #ff1493;
+    --dshadow3: #ff85c1;
+    --dshadow4: #cc1076;
+}
+
+:root[data-theme="red"] {
+    --header-active-background-color: rgba(255, 40, 40, 0.55);
+    --header-hover-background-color: rgba(255, 40, 40, 0.13);
+    --image-outline-color: #ff2828;
+    --button-background-color: #ff2828;
+    --button-gradient-color: linear-gradient(304deg, rgb(255, 80, 80) 0%, #ff2828 100%);
+    --link-hover-color: #ff2828;
+    --dshadow1: #ff5050;
+    --dshadow2: #ff2828;
+    --dshadow3: #ff7070;
+    --dshadow4: #cc2020;
+}
+
+:root[data-theme="orange"] {
+    --header-active-background-color: rgba(255, 140, 0, 0.55);
+    --header-hover-background-color: rgba(255, 140, 0, 0.13);
+    --image-outline-color: #ff8c00;
+    --button-background-color: #ff8c00;
+    --button-gradient-color: linear-gradient(304deg, rgb(255, 165, 0) 0%, #ff8c00 100%);
+    --link-hover-color: #ff8c00;
+    --dshadow1: #ffa500;
+    --dshadow2: #ff8c00;
+    --dshadow3: #ffbb33;
+    --dshadow4: #cc7000;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100dvh;
+    overflow: hidden;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+input {
+    font-family: inherit;
+    outline: none;
+    border: none;
+    background: none;
+    color: inherit;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    user-select: none;
+}
+
+/* ============================================================
+   APP LAYOUT
+   ============================================================ */
+.app {
+    display: grid;
+    grid-template-columns: var(--logo-col) 1fr;
+    grid-template-rows: var(--topbar-h) 1fr;
+    grid-template-areas:
+        "logo topbar"
+        "sidebar main";
+    height: 100dvh;
+    width: 100vw;
+    background-color: var(--navbar-background-color);
+}
+
+/* ============================================================
+   LOGO
+   ============================================================ */
+.logo {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--navbar-background-color);
+    z-index: 3;
+    overflow: hidden;
+}
+
+.logo-img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.logo:hover .logo-img { transform: scale(1.06); }
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar {
+    grid-area: topbar;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 var(--topbar-padding);
+    background-color: var(--navbar-background-color);
+    z-index: 3;
+    min-width: 0;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.topbar-btn {
+    width: var(--topbar-btn-size);
+    height: var(--topbar-btn-size);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    transition: background-color 0.15s ease, color 0.15s ease;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.topbar-btn:hover { background-color: var(--header-hover-background-color); }
+.topbar-btn:active { background-color: var(--header-active-background-color); }
+.topbar-btn span { font-size: var(--topbar-icon-size); }
+
+.topbar-btn.discord-btn:hover {
+    background-color: rgba(88, 101, 242, 0.15);
+    color: var(--discord-color);
+}
+
+.topbar-btn.discord-btn:active {
+    background-color: rgba(88, 101, 242, 0.25);
+}
+
+.topbar-btn.discord-btn span {
+    font-size: calc(var(--topbar-icon-size) - 2px);
+}
+
+.topbar-btn#btnBack {
+    display: none;
+}
+
+.app.back-visible .topbar-btn#btnBack {
+    display: flex;
+}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+.topbar-search-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: var(--topbar-search-max);
+    padding: 0 calc(var(--topbar-btn-size) * 2 + var(--topbar-search-gap) * 2);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.topbar-search {
+    width: 100%;
+    height: var(--topbar-search-h);
+    background-color: var(--input-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 10px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    pointer-events: auto;
+    min-width: 0;
+}
+
+.topbar-search:focus-within {
+    border-color: var(--dshadow1);
+    background-color: #0a0a0af0;
+}
+
+.topbar-search .material-symbols-outlined {
+    font-size: 18px;
+    color: #868686;
+    flex-shrink: 0;
+}
+
+.topbar-search input {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text-color);
+    text-align: left;
+    font-weight: 200;
+    min-width: 0;
+}
+
+.topbar-search input::placeholder { color: #868686; font-weight: 200; }
+
+/* Game title */
+.topbar-game-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: var(--topbar-search-max);
+    padding: 0 calc(var(--topbar-btn-size) * 2 + var(--topbar-search-gap) * 2);
+    pointer-events: none;
+    display: none;
+    z-index: 1;
+}
+
+.topbar.game-active .topbar-game-title {
+    display: block;
+}
+
+.topbar.game-active .topbar-search-wrapper,
+.topbar.game-active #btnRandom {
+    display: none;
+}
+
+.topbar-game-title-inner {
+    width: 100%;
+    height: var(--topbar-search-h);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    background-color: var(--input-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    pointer-events: auto;
+    min-width: 0;
+}
+
+.topbar-game-title .game-icon {
+    font-size: 18px;
+    color: var(--dshadow1);
+    flex-shrink: 0;
+}
+
+.topbar-game-title .game-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+
+.topbar-game-title .game-cat {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dshadow1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+/* Tijdens game: fullscreen knop neemt de plek van Discord in */
+.topbar-game-actions {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.topbar.game-active .topbar-game-actions {
+    display: flex;
+}
+
+.topbar.game-active .topbar-right {
+    display: none;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+    grid-area: sidebar;
+    background-color: var(--navbar-background-color);
+    padding: var(--sb-padding) 0 var(--sb-padding) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.sb-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 var(--sb-padding);
+    flex-shrink: 0;
+}
+
+.sb-cats-wrapper {
+    position: relative;
+    width: 100%;
+    max-height: 80%;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 4px 0;
+    overflow: hidden;
+    padding: 0 var(--sb-padding);
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.15s ease;
+}
+
+.sidebar.game-active .sb-cats-wrapper {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.sidebar.game-active .sb-cats-wrapper + .sb-sep,
+.sidebar.game-active .sb-bottom {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.sb-cats-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(
+        to bottom,
+        var(--navbar-background-color) 0%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.sb-cats-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(
+        to top,
+        var(--navbar-background-color) 0%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.sb-cats-wrapper.can-scroll-up::before { opacity: 1; }
+.sb-cats-wrapper.can-scroll-down::after { opacity: 1; }
+
+.sb-cats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0;
+    flex: 1;
+    min-height: 0;
+}
+
+.sb-cats::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+.sb-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 var(--sb-padding);
+    flex-shrink: 0;
+    transition: opacity 0.15s ease;
+}
+
+.sb-sep {
+    width: 60%;
+    height: 1px;
+    background: var(--hr-background);
+    margin: 4px auto;
+    flex-shrink: 0;
+    border: none;
+    transition: opacity 0.15s ease;
+}
+
+.sb-btn {
+    width: 100%;
+    height: var(--sb-btn-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    transition: background-color 0.12s ease;
+    border-radius: 7px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sb-btn span.material-symbols-outlined {
+    font-size: var(--sb-icon-size);
+    padding: 10px;
+    margin: 0;
+}
+
+.sb-btn:hover {
+    background-color: var(--header-hover-background-color);
+}
+
+.sb-btn:active {
+    background-color: var(--header-active-background-color);
+}
+
+.sb-btn.active,
+.sb-btn#navactive {
+    background-color: var(--header-active-background-color);
+}
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+.main {
+    grid-area: main;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--background-color);
+    border-radius: var(--main-radius);
+    margin: 0 var(--main-margin) var(--main-margin) var(--main-margin);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    isolation: isolate;
+    min-height: 0;
+    min-width: 0;
+}
+
+.main-scroll {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    z-index: 2;
+    border-radius: inherit;
+    -webkit-overflow-scrolling: touch;
+    transition: opacity 0.15s ease;
+}
+
+.main-scroll::-webkit-scrollbar { display: none; }
+
+.main.game-active .main-scroll,
+.main.game-active .bg-effects,
+.main.game-active .stars {
+    display: none;
+}
+
+/* ============================================================
+   BG EFFECTS
+   ============================================================ */
+.bg-effects {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
+    opacity: var(--glow-intensity);
+    transition: opacity 0.2s ease;
+}
+
+.blob {
+    box-shadow: 0 0 150px 100px var(--link-hover-color);
+    border-radius: 50%;
+    height: 290px;
+    width: 290px;
+    background-image: radial-gradient(
+        farthest-corner at 50% 50%,
+        #ffffff,
+        var(--dshadow3)
+    );
+    background-blend-mode: multiply;
+    filter: blur(50px) contrast(1.1);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 47vw;
+    top: 100vh;
+}
+
+.blobbig {
+    box-shadow: 0 0 150px 100px var(--link-hover-color);
+    border-radius: 100%;
+    height: 45vh;
+    width: 75vw;
+    opacity: 0.15;
+    background-image: radial-gradient(
+        farthest-corner at 50% 50%,
+        #ffffff,
+        var(--dshadow4)
+    );
+    background-blend-mode: multiply;
+    filter: blur(50px) contrast(1.1);
+    position: absolute;
+    transform: translate(-50%, -35%);
+    left: 47vw;
+    top: 100vh;
+}
+
+.blobsmall {
+    box-shadow: 0 0 150px 50px var(--dshadow4);
+    border-radius: 50%;
+    height: 50px;
+    width: 340px;
+    background-image: radial-gradient(
+        farthest-corner at 50% 50%,
+        #ffffff,
+        var(--dshadow3)
+    );
+    background-blend-mode: multiply;
+    filter: blur(50px) contrast(1.2);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 60vw;
+    top: 100vh;
+}
+
+.blobtop {
+    box-shadow: 0 0 1px 20px var(--dshadow4);
+    border-radius: 50%;
+    height: 230px;
+    width: 20px;
+    background-image: radial-gradient(
+        farthest-corner at 50% 50%,
+        #ffffff,
+        var(--dshadow3)
+    );
+    background-blend-mode: multiply;
+    filter: blur(50px) contrast(1.1);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    rotate: -20deg;
+    left: 41.6vw;
+    top: calc(89vh - 200px);
+}
+
+/* ============================================================
+   STARS
+   ============================================================ */
+.stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+    border-radius: inherit;
+}
+
+.star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+}
+
+/* ============================================================
+   SPACE CONTENT
+   ============================================================ */
+.space-content {
+    position: relative;
+    z-index: 2;
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: var(--content-padding);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* ============================================================
+   TILES
+   ============================================================ */
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(var(--tiles-cols), minmax(0, 1fr));
+    gap: var(--tiles-gap);
+    width: 100%;
+    max-width: var(--tiles-max);
+}
+
+.tile {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--tile-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    overflow: hidden;
+    position: relative;
+    opacity: 0;
+    animation: tile-in 0.4s ease forwards;
+    user-select: none;
+    background-color: #0d0a14;
+    contain: layout style paint;
+}
+
+@keyframes tile-in {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.tile:hover {
+    transform: translateY(-3px) scale(1.015);
+    box-shadow:
+        0 12px 32px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 0 24px -8px var(--dshadow1);
+    z-index: 2;
+}
+
+.tile:active {
+    transform: translateY(-1px) scale(0.995);
+}
+
+.tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tile img.loaded {
+    opacity: 1;
+}
+
+.tile-fallback {
+    background: #14101f;
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
+
+.empty-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--page-text-color);
+}
+
+.empty-state.visible { display: flex; }
+
+.empty-state span.material-symbols-outlined {
+    font-size: 56px;
+    margin-bottom: 14px;
+    color: var(--page-text-color);
+}
+
+.empty-state p {
+    font-size: 14px;
+    color: var(--page-text-color);
+    font-weight: 200;
+}
+
+/* ============================================================
+   GAME PLAYER
+   ============================================================ */
+.game-player {
+    position: absolute;
+    inset: 0;
+    background-color: #000;
+    z-index: 5;
+    display: none;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.game-player.active {
+    display: block;
+}
+
+.game-player nex-game {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+/* ============================================================
+   SETTINGS PAGE
+   ============================================================ */
+.settings-page {
+    position: absolute;
+    inset: 0;
+    background-color: var(--background-color);
+    z-index: 10;
+    display: none;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.settings-page.active { display: block; }
+
+.settings-scroll {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--dshadow4) transparent;
+    padding: 40px 32px 80px;
+    border-radius: inherit;
+}
+
+.settings-scroll::-webkit-scrollbar { width: 6px; }
+.settings-scroll::-webkit-scrollbar-track { background: transparent; }
+.settings-scroll::-webkit-scrollbar-thumb {
+    background: var(--dshadow4);
+    border-radius: 30px;
+}
+
+.settings-header {
+    margin-bottom: 28px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.settings-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.settingsection {
+    background-color: var(--settingsection-background-color);
+    border-radius: 14px;
+    padding: 18px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.settingsection h2 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: var(--text-color);
+}
+
+.settingsection p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.settingsection hr {
+    border: 0;
+    height: 1px;
+    background: var(--settingsection-hr-background);
+    opacity: 0.4;
+    margin: 12px 0;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 0;
+}
+
+.setting-row + .setting-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.setting-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.setting-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 2px;
+    font-weight: 400;
+}
+
+.setting-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.setting-btn {
+    height: 34px;
+    padding: 0 16px;
+    background-color: var(--button-reg-background-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    border: 1px solid #ffffff17;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.setting-btn:hover { background-color: var(--button-reg-hover-background-color); }
+.setting-btn:active { background-color: var(--button-reg-active-background-color); }
+
+.setting-btn span { font-size: 17px; }
+
+.setting-btn.danger {
+    color: #ff6b6b;
+}
+
+.setting-btn.danger:hover {
+    background-color: rgba(255, 107, 107, 0.12);
+    border-color: rgba(255, 107, 107, 0.25);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    transition: background-color 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.slider::before {
+    position: absolute;
+    content: '';
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.switch input:checked + .slider {
+    background-color: var(--button-background-color);
+    border-color: transparent;
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(20px);
+    background-color: #fff;
+}
+
+.range-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px 0;
+    width: 100%;
+}
+
+.range-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.range-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dshadow1);
+    min-width: 44px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.range-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease;
+}
+
+.range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--button-background-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.range-input::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 4px var(--header-hover-background-color);
+}
+
+.range-input::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--button-background-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.range-input::-moz-range-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 4px var(--header-hover-background-color);
+}
+
+.theme-picker {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.theme-swatch {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.15s ease;
+    border: 2px solid transparent;
+}
+
+.theme-swatch:hover { transform: scale(1.05); }
+
+.theme-swatch.active {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6);
+}
+
+.theme-swatch.active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;
+}
+
+.theme-swatch[data-color="blue"] { background: #0078ff; }
+.theme-swatch[data-color="purple"] { background: #8b5cf6; }
+.theme-swatch[data-color="green"] { background: #00dc82; }
+.theme-swatch[data-color="pink"] { background: #ff1493; }
+.theme-swatch[data-color="red"] { background: #ff2828; }
+.theme-swatch[data-color="orange"] { background: #ff8c00; }
+
+.info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 4px 0;
+}
+
+.info-key {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+}
+
+.info-value {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1400px) {
+    :root {
+        --content-max: 1040px;
+        --tiles-max: 1000px;
+    }
+}
+
+@media (max-width: 1200px) {
+    :root {
+        --tiles-cols: 4;
+        --tiles-gap: 16px;
+        --content-max: 900px;
+        --tiles-max: 900px;
+        --topbar-search-gap: 40px;
+    }
+}
+
+@media (max-width: 1024px) {
+    :root {
+        --logo-col: 56px;
+        --topbar-h: 52px;
+        --sb-btn-h: 38px;
+        --sb-icon-size: 19px;
+        --content-padding: 40px 32px 120px;
+        --main-radius: 20px;
+        --main-margin: 8px;
+        --tile-radius: 20px;
+        --topbar-search-max: 700px;
+        --topbar-btn-size: 34px;
+        --topbar-icon-size: 19px;
+        --topbar-search-gap: 30px;
+    }
+}
+
+@media (max-width: 900px) {
+    :root {
+        --tiles-cols: 3;
+        --tiles-gap: 14px;
+        --content-max: 700px;
+        --tiles-max: 700px;
+        --content-padding: 32px 24px 110px;
+        --topbar-search-gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --topbar-search-max: none;
+        --content-padding: 28px 20px 100px;
+        --topbar-search-gap: 12px;
+    }
+
+    .settings-scroll { padding: 28px 20px 60px; }
+    .settings-title { font-size: 22px; }
+}
+
+@media (max-width: 640px) {
+    :root {
+        --logo-col: 52px;
+        --topbar-h: 50px;
+        --sb-btn-h: 36px;
+        --sb-icon-size: 18px;
+        --sb-padding: 4px;
+        --topbar-padding: 8px;
+        --topbar-btn-size: 32px;
+        --topbar-icon-size: 18px;
+        --content-padding: 24px 16px 90px;
+        --tiles-cols: 2;
+        --tiles-gap: 12px;
+        --tile-radius: 18px;
+        --main-radius: 18px;
+        --main-margin: 6px;
+        --topbar-search-gap: 6px;
+    }
+
+    .topbar-search input { font-size: 13px; }
+    .topbar-game-title .game-name { font-size: 13px; }
+    .topbar-game-title .game-cat { font-size: 10px; }
+
+    .blob { height: 240px; width: 240px; }
+    .blobbig { height: 40vh; }
+    .blobsmall { width: 260px; }
+    .blobtop { height: 190px; }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --logo-col: 48px;
+        --topbar-h: 48px;
+        --sb-btn-h: 34px;
+        --sb-icon-size: 17px;
+        --topbar-btn-size: 30px;
+        --topbar-icon-size: 17px;
+        --content-padding: 20px 14px 80px;
+        --tiles-gap: 10px;
+        --tile-radius: 16px;
+        --main-radius: 16px;
+        --main-margin: 5px;
+        --topbar-padding: 6px;
+        --topbar-search-gap: 4px;
+    }
+
+    .empty-state span.material-symbols-outlined { font-size: 44px; }
+    .empty-state p { font-size: 13px; }
+
+    .settings-scroll { padding: 20px 14px 50px; }
+    .settings-title { font-size: 20px; }
+    .settingsection { padding: 14px 16px; border-radius: 12px; }
+    .setting-btn { height: 32px; padding: 0 12px; font-size: 12px; }
+    .theme-picker { grid-template-columns: repeat(3, 1fr); }
+
+    .topbar-game-title .game-cat { display: none; }
+}
+
+@media (max-width: 380px) {
+    :root {
+        --logo-col: 44px;
+        --topbar-h: 46px;
+        --sb-btn-h: 32px;
+        --sb-icon-size: 16px;
+        --topbar-btn-size: 28px;
+        --topbar-icon-size: 16px;
+        --content-padding: 16px 12px 70px;
+        --tiles-gap: 9px;
+        --tile-radius: 14px;
+        --main-radius: 14px;
+        --main-margin: 4px;
+        --topbar-padding: 4px;
+        --topbar-search-gap: 2px;
+    }
+
+    .logo-img { width: 32px; height: 32px; }
+}
+
+@media (max-width: 340px) {
+    :root {
+        --tiles-cols: 1;
+        --tiles-gap: 10px;
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    :root {
+        --content-padding: 20px 24px 60px;
+    }
+
+    .tiles {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (hover: none) {
+    .tile:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .topbar-search:hover { box-shadow: none; }
+    .sb-btn:hover { background-color: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .star { animation: none; opacity: 0.5; }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+    <div class="logo">
+        <img
+            src="https://cdn.jsdelivr.net/gh/jkjkjiin/space-proxy/public/assets/logo.png"
+            alt="Logo"
+            class="logo-img"
+            draggable="false"
+        >
+    </div>
+
+    <div class="topbar" id="topbar">
+        <div class="topbar-left">
+            <button class="topbar-btn" id="btnBack" title="Back" aria-label="Back">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <button class="topbar-btn" id="btnRandom" title="Random game" aria-label="Random game">
+                <span class="material-symbols-outlined">shuffle</span>
+            </button>
+        </div>
+
+        <div class="topbar-search-wrapper" id="topbarSearchWrapper">
+            <div class="topbar-search">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" id="topSearch" placeholder="Search games..." autocomplete="off" spellcheck="false" aria-label="Search games">
+            </div>
+        </div>
+
+        <div class="topbar-game-title" id="topbarGameTitle">
+            <div class="topbar-game-title-inner">
+                <span class="material-symbols-outlined game-icon">sports_esports</span>
+                <span class="game-name" id="gameTitleText">Game</span>
+                <span class="game-cat" id="gameCatText">Category</span>
+            </div>
+        </div>
+
+        <!-- Menu rechts: alleen Discord -->
+        <div class="topbar-right" id="topbarRight">
+            <a class="topbar-btn discord-btn" href="https://discord.gg/89UcWf8rbR" target="_blank" rel="noopener noreferrer" title="Join our Discord" aria-label="Join our Discord">
+                <span class="fa-brands fa-discord"></span>
+            </a>
+        </div>
+
+        <!-- Tijdens game rechts: alleen fullscreen (neemt plek van Discord in) -->
+        <div class="topbar-game-actions" id="topbarGameActions">
+            <button class="topbar-btn" onclick="toggleFullscreen()" title="Fullscreen" aria-label="Fullscreen">
+                <span class="material-symbols-outlined">fullscreen</span>
+            </button>
+        </div>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sb-top">
+            <button class="sb-btn active" data-page="all" id="navactive" title="All games" aria-label="All games">
+                <span class="material-symbols-outlined">apps</span>
+            </button>
+        </div>
+
+        <div class="sb-sep"></div>
+
+        <div class="sb-cats-wrapper" id="sbCatsWrapper">
+            <div class="sb-cats" id="sbCats">
+                <button class="sb-btn nav-cat" data-cat="Action" title="Action" aria-label="Action">
+                    <span class="material-symbols-outlined">swords</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Puzzle" title="Puzzle" aria-label="Puzzle">
+                    <span class="material-symbols-outlined">extension</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Strategy" title="Strategy" aria-label="Strategy">
+                    <span class="material-symbols-outlined">psychology</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Sports" title="Sports" aria-label="Sports">
+                    <span class="material-symbols-outlined">sports_soccer</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Racing" title="Racing" aria-label="Racing">
+                    <span class="material-symbols-outlined">sports_motorsports</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Driving" title="Driving" aria-label="Driving">
+                    <span class="material-symbols-outlined">directions_car</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Skill" title="Skill" aria-label="Skill">
+                    <span class="material-symbols-outlined">bolt</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Horror" title="Horror" aria-label="Horror">
+                    <span class="material-symbols-outlined">skull</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Simulation" title="Simulation" aria-label="Simulation">
+                    <span class="material-symbols-outlined">agriculture</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Sandbox" title="Sandbox" aria-label="Sandbox">
+                    <span class="material-symbols-outlined">castle</span>
+                </button>
+                <button class="sb-btn nav-cat" data-cat="Clicker" title="Clicker" aria-label="Clicker">
+                    <span class="material-symbols-outlined">touch_app</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="sb-sep"></div>
+
+        <div class="sb-bottom">
+            <button class="sb-btn" id="btnSettings" title="Settings" aria-label="Settings">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+        </div>
+
+    </aside>
+
+    <main class="main" id="main">
+        <div class="bg-effects">
+            <div class="blobbig"></div>
+            <div class="blob"></div>
+            <div class="blobsmall"></div>
+            <div class="blobtop"></div>
+        </div>
+
+        <div class="stars" id="stars"></div>
+
+        <div class="main-scroll" id="mainScroll">
+            <div class="space-content">
+
+                <div class="tiles" id="tiles"></div>
+
+                <div class="empty-state" id="emptyState">
+                    <span class="material-symbols-outlined">search_off</span>
+                    <p>No games found</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="game-player" id="gamePlayer">
+            <div id="playerBody" style="width:100%;height:100%;"></div>
+        </div>
+
+        <div class="settings-page" id="settingsPage">
+            <div class="settings-scroll">
+
+                <div class="settings-header">
+                    <h1 class="settings-title">Settings</h1>
+                </div>
+
+                <div class="settings-container">
+
+                    <div class="settingsection">
+                        <h2>Appearance</h2>
+                        <p>Customize how Nex Space looks.</p>
+
+                        <div class="setting-row" style="flex-direction: column; align-items: stretch; gap: 8px;">
+                            <div>
+                                <div class="setting-label">Theme color</div>
+                                <div class="setting-desc">Pick an accent color for the interface</div>
+                            </div>
+                            <div class="theme-picker" id="themePicker">
+                                <div class="theme-swatch" data-color="blue" title="Blue" role="button" tabindex="0" aria-label="Blue theme"></div>
+                                <div class="theme-swatch" data-color="purple" title="Purple" role="button" tabindex="0" aria-label="Purple theme"></div>
+                                <div class="theme-swatch" data-color="green" title="Green" role="button" tabindex="0" aria-label="Green theme"></div>
+                                <div class="theme-swatch" data-color="pink" title="Pink" role="button" tabindex="0" aria-label="Pink theme"></div>
+                                <div class="theme-swatch" data-color="red" title="Red" role="button" tabindex="0" aria-label="Red theme"></div>
+                                <div class="theme-swatch" data-color="orange" title="Orange" role="button" tabindex="0" aria-label="Orange theme"></div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="range-wrapper">
+                            <div class="range-header">
+                                <div>
+                                    <div class="setting-label">Glow intensity</div>
+                                    <div class="setting-desc">Control the strength of the background glow</div>
+                                </div>
+                                <div class="range-value" id="glowValue">100%</div>
+                            </div>
+                            <input type="range" class="range-input" id="setGlow" min="0" max="100" step="1" value="100" aria-label="Glow intensity">
+                        </div>
+
+                        <hr>
+
+                        <div class="setting-row">
+                            <div>
+                                <div class="setting-label">Star animation</div>
+                                <div class="setting-desc">Show twinkling stars in the background</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setStars" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-row">
+                            <div>
+                                <div class="setting-label">Glow effect</div>
+                                <div class="setting-desc">Show the colored gradient background</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setBlobs" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settingsection">
+                        <h2>Games</h2>
+                        <p>Manage how games are displayed.</p>
+
+                        <div class="setting-row">
+                            <div>
+                                <div class="setting-label">Sort by name</div>
+                                <div class="setting-desc">Sort alphabetically instead of default order</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="setSort" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <hr>
+
+                        <div class="setting-actions">
+                            <button class="setting-btn" id="setReloadGames">
+                                <span class="material-symbols-outlined">refresh</span>
+                                Reload games
+                            </button>
+                            <button class="setting-btn" id="setClearCache">
+                                <span class="material-symbols-outlined">delete_sweep</span>
+                                Clear cache
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="settingsection">
+                        <h2>About</h2>
+                        <p>Information about this application.</p>
+
+                        <div class="info-block">
+                            <div class="info-line">
+                                <span class="info-key">Version</span>
+                                <span class="info-value">1.0.0</span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-key">Platform</span>
+                                <span class="info-value">Nex Games</span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-key">Games loaded</span>
+                                <span class="info-value" id="infoGameCount">0</span>
+                            </div>
+                            <div class="info-line">
+                                <span class="info-key">Categories</span>
+                                <span class="info-value" id="infoCatCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settingsection">
+                        <h2>Danger zone</h2>
+                        <p>These actions cannot be undone.</p>
+
+                        <div class="setting-actions">
+                            <button class="setting-btn danger" id="setResetAll">
+                                <span class="material-symbols-outlined">restart_alt</span>
+                                Reset all settings
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    let allGames = [];
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let currentGid = null;
+    let currentAlias = null;
+    let hasLoaded = false;
+
+    let savedScrollTop = 0;
+    let savedSearchValue = '';
+
+    const STORAGE_KEY = 'nexspace.settings';
+    const THEME_KEY = 'nexspace.theme';
+
+    const app = document.getElementById('app');
+    const tilesEl = document.getElementById('tiles');
+    const topSearch = document.getElementById('topSearch');
+    const emptyState = document.getElementById('emptyState');
+    const mainScroll = document.getElementById('mainScroll');
+    const gamePlayer = document.getElementById('gamePlayer');
+    const playerBody = document.getElementById('playerBody');
+    const gameTitleText = document.getElementById('gameTitleText');
+    const gameCatText = document.getElementById('gameCatText');
+    const starsEl = document.getElementById('stars');
+    const sbCatsWrapper = document.getElementById('sbCatsWrapper');
+    const sbCats = document.getElementById('sbCats');
+    const settingsPage = document.getElementById('settingsPage');
+    const btnSettings = document.getElementById('btnSettings');
+    const themePicker = document.getElementById('themePicker');
+    const bgEffects = document.querySelector('.bg-effects');
+    const mainEl = document.getElementById('main');
+    const sidebar = document.getElementById('sidebar');
+    const topbar = document.getElementById('topbar');
+    const glowSlider = document.getElementById('setGlow');
+    const glowValue = document.getElementById('glowValue');
+
+    function makeStars() {
+        if (!starsEl) return;
+        const w = window.innerWidth;
+        const count = w < 480 ? 35 : w < 820 ? 50 : 70;
+        let html = '';
+        for (let i = 0; i < count; i++) {
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const size = Math.random() * 1.6 + 0.4;
+            const delay = Math.random() * 3;
+            html += `<div class="star" style="left:${x}%;top:${y}%;width:${size}px;height:${size}px;animation-delay:${delay}s"></div>`;
+        }
+        starsEl.innerHTML = html;
+    }
+
+    function generateGid(alias) {
+        return 'nex-' + alias + '-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+    }
+
+    function getGamesInCurrentCategory() {
+        if (currentCategory === 'all') return allGames;
+        return allGames.filter(g => g.category === currentCategory);
+    }
+
+    function getFilteredGames() {
+        let filtered = allGames;
+
+        if (currentCategory !== 'all') {
+            filtered = filtered.filter(g => g.category === currentCategory);
+        }
+
+        if (currentSearch.trim()) {
+            const q = currentSearch.toLowerCase().trim();
+            filtered = filtered.filter(g =>
+                g.name.toLowerCase().includes(q) ||
+                g.alias.toLowerCase().includes(q) ||
+                g.category.toLowerCase().includes(q) ||
+                (g.description && g.description.toLowerCase().includes(q))
+            );
+        }
+
+        return filtered;
+    }
+
+    function updateBackButton() {
+        const isGameActive = gamePlayer.classList.contains('active');
+        const isSettingsActive = settingsPage.classList.contains('active');
+        const isInCategory = currentCategory !== 'all';
+        const isSearching = currentSearch.trim() !== '';
+
+        const showBack = isGameActive || isSettingsActive || isInCategory || isSearching;
+        app.classList.toggle('back-visible', showBack);
+    }
+
+    function updateSearchPlaceholder() {
+        if (!topSearch) return;
+        const count = getGamesInCurrentCategory().length;
+        topSearch.placeholder = 'Search ' + count + ' games...';
+    }
+
+    const VALID_THEMES = ['blue', 'purple', 'green', 'pink', 'red', 'orange'];
+    const THEME_COLORS = {
+        blue: '#0078ff',
+        purple: '#8b5cf6',
+        green: '#00dc82',
+        pink: '#ff1493',
+        red: '#ff2828',
+        orange: '#ff8c00'
+    };
+
+    function applyTheme(theme) {
+        if (!VALID_THEMES.includes(theme)) theme = 'purple';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.querySelectorAll('.theme-swatch').forEach(sw => {
+            sw.classList.toggle('active', sw.dataset.color === theme);
+        });
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', THEME_COLORS[theme] || '#0a0a0a');
+    }
+
+    function saveTheme(theme) {
+        try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+    }
+
+    function loadTheme() {
+        let theme = 'purple';
+        try { theme = localStorage.getItem(THEME_KEY) || 'purple'; } catch (e) {}
+        applyTheme(theme);
+    }
+
+    function setTheme(theme) {
+        applyTheme(theme);
+        saveTheme(theme);
+    }
+
+    function saveSettings() {
+        const data = {
+            stars: document.getElementById('setStars').checked,
+            blobs: document.getElementById('setBlobs').checked,
+            sort: document.getElementById('setSort').checked,
+            glow: parseInt(glowSlider.value, 10)
+        };
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+    }
+
+    function loadSettings() {
+        let data = { stars: true, blobs: true, sort: true, glow: 100 };
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) data = Object.assign(data, JSON.parse(raw));
+        } catch (e) {}
+
+        document.getElementById('setStars').checked = data.stars;
+        document.getElementById('setBlobs').checked = data.blobs;
+        document.getElementById('setSort').checked = data.sort;
+
+        glowSlider.value = data.glow;
+        glowValue.textContent = data.glow + '%';
+        applyGlow(data.glow);
+
+        if (starsEl) starsEl.style.display = data.stars ? '' : 'none';
+        if (bgEffects) bgEffects.style.display = data.blobs ? '' : 'none';
+    }
+
+    function applyGlow(value) {
+        const intensity = Math.max(0, Math.min(100, value)) / 100;
+        document.documentElement.style.setProperty('--glow-intensity', intensity);
+    }
+
+    const imageObserver = ('IntersectionObserver' in window) ? new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const img = entry.target;
+            const src = img.dataset.src;
+            if (!src) { obs.unobserve(img); return; }
+
+            img.onload = () => {
+                img.classList.add('loaded');
+                img.removeAttribute('data-src');
+            };
+            img.onerror = () => {
+                const fb = document.createElement('div');
+                fb.className = 'tile-fallback';
+                fb.textContent = img.dataset.name || 'Game';
+                img.replaceWith(fb);
+                obs.unobserve(img);
+            };
+            img.src = src;
+            obs.unobserve(img);
+        });
+    }, {
+        root: mainScroll,
+        rootMargin: '200px 0px',
+        threshold: 0.01
+    }) : null;
+
+    function loadGames() {
+        if (hasLoaded) return;
+
+        if (!window.nex || !window.nex.metadata) {
+            setTimeout(loadGames, 300);
+            return;
+        }
+
+        try {
+            const metadata = window.nex.metadata.getAllMetadata();
+            const games = Object.values(metadata || {});
+
+            if (games.length === 0) {
+                setTimeout(loadGames, 500);
+                return;
+            }
+
+            hasLoaded = true;
+            allGames = games;
+            console.log('[Nex Space] Loaded', allGames.length, 'games');
+            updateInfoCounts();
+            updateSearchPlaceholder();
+            renderTiles();
+        } catch (e) {
+            console.error('[Nex Space]', e);
+            setTimeout(loadGames, 500);
+        }
+    }
+
+    function updateInfoCounts() {
+        const gc = document.getElementById('infoGameCount');
+        const cc = document.getElementById('infoCatCount');
+        if (gc) gc.textContent = allGames.length;
+        if (cc) {
+            const cats = new Set(allGames.map(g => g.category));
+            cc.textContent = cats.size;
+        }
+    }
+
+    function renderTiles() {
+        const filtered = getFilteredGames();
+        const sorted = filtered.slice();
+
+        const sortEnabled = document.getElementById('setSort') ? document.getElementById('setSort').checked : true;
+        if (sortEnabled) {
+            sorted.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        updateSearchPlaceholder();
+
+        if (sorted.length === 0) {
+            tilesEl.innerHTML = '';
+            emptyState.classList.add('visible');
+            updateBackButton();
+            return;
+        }
+        emptyState.classList.remove('visible');
+
+        const frag = document.createDocumentFragment();
+        sorted.forEach((game, i) => {
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            tile.style.animationDelay = Math.min(i * 0.015, 0.3) + 's';
+            tile.setAttribute('role', 'button');
+            tile.setAttribute('tabindex', '0');
+            tile.setAttribute('aria-label', 'Play ' + game.name);
+            tile.title = game.name + ' - ' + game.category;
+
+            const img = document.createElement('img');
+            img.alt = game.name;
+            img.dataset.src = game.img;
+            img.dataset.name = game.name;
+            img.loading = 'lazy';
+            img.decoding = 'async';
+
+            tile.appendChild(img);
+
+            if (imageObserver) {
+                imageObserver.observe(img);
+            } else {
+                img.src = game.img;
+                img.onload = () => img.classList.add('loaded');
+                img.onerror = function () {
+                    const fb = document.createElement('div');
+                    fb.className = 'tile-fallback';
+                    fb.textContent = game.name;
+                    this.replaceWith(fb);
+                };
+            }
+
+            tile.addEventListener('click', () => playGame(game.alias));
+            tile.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    playGame(game.alias);
+                }
+            });
+
+            frag.appendChild(tile);
+        });
+
+        tilesEl.innerHTML = '';
+        tilesEl.appendChild(frag);
+
+        updateBackButton();
+    }
+
+    window.playGame = function (alias) {
+        const game = allGames.find(g => g.alias === alias);
+        if (!game) return;
+
+        savedScrollTop = mainScroll.scrollTop;
+        savedSearchValue = topSearch.value;
+
+        currentAlias = alias;
+        currentGid = generateGid(alias);
+
+        gameTitleText.textContent = game.name;
+        gameCatText.textContent = game.category;
+
+        playerBody.innerHTML = '';
+
+        const nexEl = document.createElement('nex-game');
+        nexEl.setAttribute('alias', alias);
+        nexEl.setAttribute('gid', currentGid);
+        nexEl.style.width = '100%';
+        nexEl.style.height = '100%';
+        nexEl.style.display = 'block';
+        nexEl.style.backgroundColor = '#000';
+        nexEl.id = 'active-game';
+
+        playerBody.appendChild(nexEl);
+
+        gamePlayer.classList.add('active');
+        mainEl.classList.add('game-active');
+        sidebar.classList.add('game-active');
+        topbar.classList.add('game-active');
+
+        closeSettings();
+        updateBackButton();
+
+        waitForNex(currentGid, (nexInstance) => {
+            nexInstance.on('ready', () => nexInstance.start());
+            nexInstance.on('error', (err) => console.error('[Nex Space]', err));
+        });
+    };
+
+    function waitForNex(gid, callback, attempts = 0) {
+        if (window.nex && window.nex[gid]) {
+            callback(window.nex[gid]);
+        } else if (attempts < 50) {
+            setTimeout(() => waitForNex(gid, callback, attempts + 1), 100);
+        } else {
+            console.error('[Nex Space] Nex instance not found:', gid);
+        }
+    }
+
+    window.closeGame = function () {
+        gamePlayer.classList.remove('active');
+        setTimeout(() => { playerBody.innerHTML = ''; }, 200);
+
+        mainEl.classList.remove('game-active');
+        sidebar.classList.remove('game-active');
+        topbar.classList.remove('game-active');
+
+        topSearch.value = savedSearchValue;
+        currentSearch = savedSearchValue;
+
+        const activeCat = currentCategory;
+        if (activeCat === 'all') {
+            const allBtn = document.querySelector('.sidebar [data-page="all"]');
+            if (allBtn) {
+                document.querySelectorAll('.sidebar .sb-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.removeAttribute('id');
+                });
+                allBtn.classList.add('active');
+                allBtn.setAttribute('id', 'navactive');
+            }
+        } else {
+            const catBtn = document.querySelector(`.sidebar .nav-cat[data-cat="${activeCat}"]`);
+            if (catBtn) {
+                document.querySelectorAll('.sidebar .sb-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.removeAttribute('id');
+                });
+                catBtn.classList.add('active');
+                catBtn.setAttribute('id', 'navactive');
+            }
+        }
+
+        requestAnimationFrame(() => {
+            mainScroll.scrollTop = savedScrollTop;
+        });
+
+        currentGid = null;
+        currentAlias = null;
+        updateBackButton();
+    };
+
+    window.toggleFullscreen = function () {
+        const gameEl = document.getElementById('active-game');
+        if (!gameEl) return;
+
+        if (!document.fullscreenElement) {
+            if (gameEl.requestFullscreen) gameEl.requestFullscreen();
+            else if (gameEl.webkitRequestFullscreen) gameEl.webkitRequestFullscreen();
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        }
+    };
+
+    function playRandomGame() {
+        const filtered = getFilteredGames();
+        if (filtered.length === 0) return;
+
+        if (filtered.length === 1) {
+            playGame(filtered[0].alias);
+            return;
+        }
+
+        let randomGame;
+        let attempts = 0;
+        do {
+            randomGame = filtered[Math.floor(Math.random() * filtered.length)];
+            attempts++;
+        } while (randomGame.alias === currentAlias && attempts < 10);
+
+        playGame(randomGame.alias);
+    }
+
+    document.getElementById('btnRandom').addEventListener('click', () => {
+        if (gamePlayer.classList.contains('active')) return;
+        playRandomGame();
+    });
+
+    let searchTimeout;
+    topSearch.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        const val = e.target.value;
+        searchTimeout = setTimeout(() => {
+            currentSearch = val;
+            renderTiles();
+        }, 180);
+    });
+
+    function setSidebarActive(el) {
+        document.querySelectorAll('.sidebar .sb-btn').forEach(b => {
+            b.classList.remove('active');
+            b.removeAttribute('id');
+        });
+        el.classList.add('active');
+        el.setAttribute('id', 'navactive');
+    }
+
+    document.querySelector('.sidebar [data-page="all"]').addEventListener('click', (e) => {
+        if (gamePlayer.classList.contains('active')) return;
+        const btn = e.currentTarget;
+        setSidebarActive(btn);
+        currentCategory = 'all';
+        currentSearch = '';
+        topSearch.value = '';
+        renderTiles();
+        mainScroll.scrollTo({ top: 0, behavior: 'smooth' });
+        closeSettings();
+    });
+
+    document.querySelectorAll('.sidebar .nav-cat').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (gamePlayer.classList.contains('active')) return;
+            setSidebarActive(btn);
+            currentCategory = btn.dataset.cat;
+            currentSearch = '';
+            topSearch.value = '';
+            renderTiles();
+            mainScroll.scrollTo({ top: 0, behavior: 'smooth' });
+            closeSettings();
+        });
+    });
+
+    function updateFade() {
+        if (!sbCats || !sbCatsWrapper) return;
+        const canScrollUp = sbCats.scrollTop > 4;
+        const canScrollDown = sbCats.scrollTop + sbCats.clientHeight < sbCats.scrollHeight - 4;
+        sbCatsWrapper.classList.toggle('can-scroll-up', canScrollUp);
+        sbCatsWrapper.classList.toggle('can-scroll-down', canScrollDown);
+    }
+
+    sbCats.addEventListener('scroll', updateFade, { passive: true });
+    window.addEventListener('resize', updateFade, { passive: true });
+
+    if (window.ResizeObserver) {
+        const ro = new ResizeObserver(updateFade);
+        ro.observe(sbCats);
+        ro.observe(sbCatsWrapper);
+    }
+
+    document.getElementById('btnBack').addEventListener('click', () => {
+        if (gamePlayer.classList.contains('active')) {
+            closeGame();
+            return;
+        }
+        if (settingsPage.classList.contains('active')) {
+            closeSettings();
+            updateBackButton();
+            return;
+        }
+        currentCategory = 'all';
+        currentSearch = '';
+        topSearch.value = '';
+        const allBtn = document.querySelector('.sidebar [data-page="all"]');
+        if (allBtn) setSidebarActive(allBtn);
+        renderTiles();
+    });
+
+    function openSettings() {
+        if (gamePlayer.classList.contains('active')) return;
+        settingsPage.classList.add('active');
+        updateInfoCounts();
+        document.querySelectorAll('.sidebar .sb-btn').forEach(b => {
+            b.classList.remove('active');
+            b.removeAttribute('id');
+        });
+        btnSettings.classList.add('active');
+        btnSettings.setAttribute('id', 'navactive');
+        updateBackButton();
+    }
+
+    function closeSettings() {
+        settingsPage.classList.remove('active');
+        updateBackButton();
+    }
+
+    btnSettings.addEventListener('click', openSettings);
+
+    themePicker.addEventListener('click', (e) => {
+        const sw = e.target.closest('.theme-swatch');
+        if (!sw) return;
+        setTheme(sw.dataset.color);
+    });
+
+    themePicker.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const sw = e.target.closest('.theme-swatch');
+        if (!sw) return;
+        e.preventDefault();
+        setTheme(sw.dataset.color);
+    });
+
+    glowSlider.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        glowValue.textContent = val + '%';
+        applyGlow(val);
+    });
+
+    glowSlider.addEventListener('change', () => {
+        saveSettings();
+    });
+
+    document.getElementById('setStars').addEventListener('change', (e) => {
+        if (starsEl) starsEl.style.display = e.target.checked ? '' : 'none';
+        saveSettings();
+    });
+
+    document.getElementById('setBlobs').addEventListener('change', (e) => {
+        if (bgEffects) bgEffects.style.display = e.target.checked ? '' : 'none';
+        saveSettings();
+    });
+
+    document.getElementById('setSort').addEventListener('change', () => {
+        saveSettings();
+        renderTiles();
+    });
+
+    document.getElementById('setReloadGames').addEventListener('click', () => {
+        hasLoaded = false;
+        allGames = [];
+        loadGames();
+        closeSettings();
+    });
+
+    document.getElementById('setClearCache').addEventListener('click', () => {
+        try {
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => caches.delete(name));
+                });
+            }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(regs => {
+                    regs.forEach(reg => reg.unregister());
+                });
+            }
+            console.log('[Nex Space] Cache cleared');
+        } catch (e) {
+            console.error('[Nex Space] Cache clear error', e);
+        }
+    });
+
+    document.getElementById('setResetAll').addEventListener('click', () => {
+        document.getElementById('setStars').checked = true;
+        document.getElementById('setBlobs').checked = true;
+        document.getElementById('setSort').checked = true;
+
+        glowSlider.value = 100;
+        glowValue.textContent = '100%';
+        applyGlow(100);
+
+        if (starsEl) starsEl.style.display = '';
+        if (bgEffects) bgEffects.style.display = '';
+
+        setTheme('purple');
+        saveSettings();
+        renderTiles();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && settingsPage.classList.contains('active')) {
+            closeSettings();
+        }
+        if (e.key === 'f' && e.ctrlKey && gamePlayer.classList.contains('active')) {
+            e.preventDefault();
+            toggleFullscreen();
+        }
+        if (e.key === '/' && !gamePlayer.classList.contains('active') && document.activeElement.tagName !== 'INPUT') {
+            e.preventDefault();
+            topSearch.focus();
+        }
+    });
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            makeStars();
+            updateFade();
+        }, 300);
+    });
+
+    loadTheme();
+    loadSettings();
+    makeStars();
+    loadGames();
+    setTimeout(updateFade, 500);
+    updateBackButton();
+
+    console.log('%c Nex Space ready', 'color:#a78bfa;font-size:14px;font-weight:bold;');
+})();
+</script>
+
+</body>
+</html>
